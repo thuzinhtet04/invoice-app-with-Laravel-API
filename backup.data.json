@@ -1,0 +1,40 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Website Design",
+            "createat": "2034-09-24T21:00:00Z",
+            "price": 1500
+        },
+        {
+            "id": 2,
+            "name": "Full-Stack Web Development",
+            "createat": "2034-09-25T14:30:00Z",
+            "price": 3000
+        },
+        {
+            "id": 3,
+            "name": "E-Commerce Website Setup",
+            "createat": "2034-09-26T10:00:00Z",
+            "price": 2500
+        },
+        {
+            "id": 4,
+            "name": "Custom Web Application",
+            "createat": "2034-09-27T08:45:00Z",
+            "price": 5000
+        },
+        {
+            "id": 5,
+            "name": "WordPress Website Development",
+            "createat": "2034-09-28T11:15:00Z",
+            "price": 1800
+        },
+        {
+            "id": 6,
+            "name": "Website Maintenance & Support",
+            "createat": "2034-09-29T16:30:00Z",
+            "price": 1000
+        }
+    ]
+}
