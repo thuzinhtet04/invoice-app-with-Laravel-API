@@ -1,9 +1,21 @@
 import React from "react";
 import { HiSearch } from "react-icons/hi";
-import { HiComputerDesktop, HiOutlinePencil, HiOutlineTrash, HiPlus } from "react-icons/hi2";
+import {
+  HiComputerDesktop,
+  HiOutlinePencil,
+  HiOutlineTrash,
+  HiPlus,
+} from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import { fetcher } from "../Api/Services";
+import VoucherListRow from "./VoucherListRow";
+import useSWR from "swr";
 
 const VoucherList = () => {
+  const { data, isLoading } = useSWR(
+    `${import.meta.env.VITE_BASE_URL}/vouchers`,
+    fetcher
+  );
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -18,8 +30,11 @@ const VoucherList = () => {
             placeholder="Search voucher..."
           />
         </div>
-        <Link to={'/sales'} className="p-2.5 ms-2 text-sm flex items-center gap-3 font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-         Create Sale
+        <Link
+          to={"/sales"}
+          className="p-2.5 ms-2 text-sm flex items-center gap-3 font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Create Sale
           <HiComputerDesktop />
         </Link>
       </div>
@@ -31,16 +46,16 @@ const VoucherList = () => {
                 Voucher ID
               </th>
               <th scope="col" className="px-6 py-3">
-                Custormer name
+                Customer name
               </th>
               <th scope="col" className="px-6 py-3">
-           Email
+                Email
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-right whitespace-nowrap"
               >
-           Date
+                Date
               </th>
               <th scope="col" className="px-6 py-3">
                 Action
@@ -51,47 +66,21 @@ const VoucherList = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 hidden last:table-row">
-              <td colSpan={5} className="px-6  text-center py-4 ">
-                There is no Voucher
-              </td>
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <td className="px-6 py-4">1</td>
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-             Kyae kyaw
-              </th>
-
-              <td className="px-6 py-4">example@gmail.com</td>
-              <td className="px-6 py-4 text-right text-nowrap">
-                <p>7 step 2034</p>
-                <p>10:00 pm</p>
-              </td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex gap-2 justify-end">
-                  <a
-                    href="#"
-                    className="font-medium text-gray-600 p-1 dark:text-blue-500 hover:underline"
-                  >
-                  <HiOutlinePencil />
-                  </a>
-                  <a
-                    href="#"
-                    className="font-medium text-red-600 p-1 dark:text-blue-500 hover:underline"
-                  >
-                    <HiOutlineTrash />
-                  </a>
-                </div>
-              </td>
-            </tr>
+            {!isLoading && !data ? (
+              <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
+                <td colSpan={5} className="px-6  text-center py-4 ">
+                  There is no Voucher
+                </td>
+              </tr>
+            ) : (
+              ""
+            )}
+            {data?.map((voucher) => (
+              <VoucherListRow key={voucher.voucher_id} voucher={voucher} />
+            ))}
           </tbody>
         </table>
       </div>
-
-   
     </div>
   );
 };

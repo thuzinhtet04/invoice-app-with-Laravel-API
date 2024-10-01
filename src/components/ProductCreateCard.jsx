@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import useSWRMutation from 'swr/mutation'
 import { z } from 'zod'
-import { addNewProduct } from '../Api/fetcher'
+import { addNewProduct } from '../Api/Services'
 import 'ldrs/leapfrog'
 
 const ProductCreateCard = () => {

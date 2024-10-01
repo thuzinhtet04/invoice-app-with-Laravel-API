@@ -2,19 +2,19 @@ import React from "react";
 import { HiSearch } from "react-icons/hi";
 
 import useSWR from "swr";
-import { fetcher } from "../Api/fetcher";
-import {  HiPlus } from "react-icons/hi2";
+import { fetcher } from "../Api/Services";
+import { HiPlus } from "react-icons/hi2";
 
 import ProductRow from "./ProductRow";
 import ProductSkeletonLoader from "./ProductSkeletonLoader";
 import { Link } from "react-router-dom";
 
 const ProductList = () => {
-  
+  const { data, isLoading, error } = useSWR(
+    import.meta.env.VITE_BASE_URL + "/products",
+    fetcher
+  );
 
-  const {data, isLoading , error}  = useSWR(import.meta.env.VITE_BASE_URL + "/products" , fetcher)
-  console.log(import.meta.env.VITE_BASE_URL + "/products")
- 
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -29,7 +29,10 @@ const ProductList = () => {
             placeholder="Search Product..."
           />
         </div>
-        <Link to="/products/create" className="p-2.5 ms-2 text-sm flex items-center gap-3 font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <Link
+          to="/products/create"
+          className="p-2.5 ms-2 text-sm flex items-center gap-3 font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
           Add New Product
           <HiPlus />
         </Link>
@@ -63,22 +66,26 @@ const ProductList = () => {
             </tr>
           </thead>
           <tbody>
-            {
-              isLoading && <>
-{ Array.from({ length: 5 }, (_, index) => index + 1).map(el => <ProductSkeletonLoader key={el} />)}
+            {isLoading && (
+              <>
+                {Array.from({ length: 5 }, (_, index) => index + 1).map(
+                  (el) => (
+                    <ProductSkeletonLoader key={el} />
+                  )
+                )}
               </>
-            }
-            {
-              data?.length === 0 ?  <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
-              <td colSpan={5} className="px-6  text-center py-4 ">
-                There is no Product
-              </td>
-            </tr> :  data?.map(product => <ProductRow key={ product.id} product={product} />)
-            }
-
-
-
-         
+            )}
+            {data?.length === 0 ? (
+              <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
+                <td colSpan={5} className="px-6  text-center py-4 ">
+                  There is no Product
+                </td>
+              </tr>
+            ) : (
+              data?.map((product) => (
+                <ProductRow key={product.id} product={product} />
+              ))
+            )}
           </tbody>
         </table>
       </div>
