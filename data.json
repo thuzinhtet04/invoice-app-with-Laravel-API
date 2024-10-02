@@ -39,52 +39,106 @@
   ],
   "vouchers": [
     {
-      "voucher_id": "INV-20241001-1128",
-      "customer_name": "asdfasd",
+      "voucher_id": "INV-20241002-4576",
+      "customer_name": "asd",
       "customer_email": "kokohtet142004@gmail.com",
-      "sale_date": "2024-10-01",
+      "sale_date": "2024-10-02",
       "all_correct": true,
       "records": [
         {
-          "id": 1727773969891,
-          "product": {
-            "id": 2,
-            "name": "Full-Stack Web Development",
-            "createat": "2034-09-25T14:30:00Z",
-            "price": 3000
-          },
-          "quantity": 2,
-          "cost": 6000,
-          "created_at": "2024-10-01T09:12:49.891Z"
-        },
-        {
-          "id": 1727773972512,
-          "product": {
-            "id": 1,
-            "name": "Website Design",
-            "createat": "2034-09-24T21:00:00Z",
-            "price": 1500
-          },
-          "quantity": 3,
-          "cost": 4500,
-          "created_at": "2024-10-01T09:12:52.512Z"
-        },
-        {
-          "id": 1727773977319,
+          "id": 1727864478209,
           "product": {
             "id": 5,
             "name": "WordPress Website Development",
             "createat": "2034-09-28T11:15:00Z",
             "price": 1800
           },
-          "quantity": 1,
-          "cost": 1800,
-          "created_at": "2024-10-01T09:12:57.319Z"
+          "quantity": 45,
+          "cost": 81000,
+          "created_at": "2024-10-02T10:21:18.209Z"
         }
       ],
-      "total": 12300,
-      "tax": 861.0000000000001,
-      "netTotal": 13161,
+      "total": 81000,
+      "tax": 5670.000000000001,
+      "netTotal": 86670,
+      "id": 1
+    },
+    {
+      "voucher_id": "INV-20241002-8781",
+      "customer_name": "asd",
+      "customer_email": "kokohtet142004@gmail.com",
+      "sale_date": "2024-10-02",
+      "all_correct": true,
+      "goVoucher": true,
+      "records": [
+        {
+          "id": 1727864598629,
+          "product": {
+            "id": 2,
+            "name": "Full-Stack Web Development",
+            "createat": "2034-09-25T14:30:00Z",
+            "price": 3000
+          },
+          "quantity": 5,
+          "cost": 15000,
+          "created_at": "2024-10-02T10:23:18.629Z"
+        }
+      ],
+      "total": 15000,
+      "tax": 1050,
+      "netTotal": 16050,
+      "id": 2
+    },
+    {
+      "voucher_id": "INV-20241002-4524",
+      "customer_name": "asd",
+      "customer_email": "kokohtet142004@gmail.com",
+      "sale_date": "2024-10-02",
+      "all_correct": true,
+      "goVoucher": true,
+      "records": [
+        {
+          "id": 1727864640133,
+          "product": {
+            "id": 2,
+            "name": "Full-Stack Web Development",
+            "createat": "2034-09-25T14:30:00Z",
+            "price": 3000
+          },
+          "quantity": 8,
+          "cost": 24000,
+          "created_at": "2024-10-02T10:24:00.133Z"
+        }
+      ],
+      "total": 24000,
+      "tax": 1680.0000000000002,
+      "netTotal": 25680,
+      "id": 3
+    },
+    {
+      "voucher_id": "INV-20241002-1100",
+      "customer_name": "vvvvvvv",
+      "customer_email": "kokohtet142004@gmail.com",
+      "sale_date": "2024-10-02",
+      "all_correct": true,
+      "goVoucher": true,
+      "records": [
+        {
+          "id": 1727864708767,
+          "product": {
+            "id": 2,
+            "name": "Full-Stack Web Development",
+            "createat": "2034-09-25T14:30:00Z",
+            "price": 3000
+          },
+          "quantity": 8,
+          "cost": 24000,
+          "created_at": "2024-10-02T10:25:08.767Z"
+        }
+      ],
+      "total": 24000,
+      "tax": 1680.0000000000002,
+      "netTotal": 25680,
       "id": 4
     }
   ]
