@@ -12,7 +12,7 @@ const ShowDate = ( {date}) => {
       minute: '2-digit',
       hour12: true  // This will give the 12-hour format with "am/pm"
     }) 
-
+    
   return (<>
     <p>{formattedDate}</p>
     <p>{formattedTime}</p>

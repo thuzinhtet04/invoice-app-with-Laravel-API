@@ -16,6 +16,7 @@
     "flowbite": "^2.5.1",
     "html2pdf.js": "^0.10.2",
     "ldrs": "^1.0.2",
+    "lodash": "^4.17.21",
     "print-js": "^1.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

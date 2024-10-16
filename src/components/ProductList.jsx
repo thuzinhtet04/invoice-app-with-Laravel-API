@@ -1,5 +1,5 @@
-import React from "react";
-import { HiSearch } from "react-icons/hi";
+import React, { useEffect, useRef, useState } from "react";
+import { HiSearch, HiX } from "react-icons/hi";
 
 import useSWR from "swr";
 import { fetcher } from "../Api/Services";
@@ -8,12 +8,41 @@ import { HiPlus } from "react-icons/hi2";
 import ProductRow from "./ProductRow";
 import ProductSkeletonLoader from "./ProductSkeletonLoader";
 import { Link } from "react-router-dom";
+import { debounce } from "lodash";
+import Pagination from "./Pagination";
 
 const ProductList = () => {
-  const { data, isLoading, error } = useSWR(
-    import.meta.env.VITE_BASE_URL + "/products",
-    fetcher
+  const [url, setUrl] = useState( import.meta.env.VITE_BASE_URL + "/products"
+);
+const [search ,setSearch] = useState("")
+
+const ref = useRef("")
+
+  const searchRef = useRef("");
+
+  const { data , isLoading , isFetching } = useSWR(url,
+    fetcher 
   );
+
+
+
+const handleSearch = debounce((e) => {
+  setUrl(import.meta.env.VITE_BASE_URL + "/products?q=" + e.target.value);
+  setSearch(e.target.value)
+  
+}, 500);
+
+
+const clearSearchHandler = () => {
+  setSearch("");
+  ref.current.value = null;
+  setUrl(import.meta.env.VITE_BASE_URL + "/products")
+};
+const updateFetchUrl = (url) => {
+  setUrl(url)
+}
+
+
 
   return (
     <div>
@@ -23,11 +52,22 @@ const ProductList = () => {
             <HiSearch className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           </div>
           <input
+            ref={ref}
+            onChange={handleSearch}
+            
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search Product..."
           />
+          {search && (
+            <div
+              onClick={clearSearchHandler}
+              className=" absolute  right-2 top-0 bottom-0 m-auto"
+            >
+              <HiX fill="red" className=" h-full" />
+            </div>
+          )}
         </div>
         <Link
           to="/products/create"
@@ -57,6 +97,12 @@ const ProductList = () => {
               >
                 Created at
               </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-right whitespace-nowrap"
+              >
+                Update at
+              </th>
               <th scope="col" className="px-6 py-3 text-right">
                 Action
               </th>
@@ -65,6 +111,7 @@ const ProductList = () => {
               </th>
             </tr>
           </thead>
+
           <tbody>
             {isLoading && (
               <>
@@ -75,20 +122,23 @@ const ProductList = () => {
                 )}
               </>
             )}
-            {data?.length === 0 ? (
+            {data?.data &&
+              data?.data?.map((product) => (
+                <ProductRow key={product.id} product={product} />
+              ))}
+      
+
+            {data?.data?.length == 0 && !isLoading && (
               <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
                 <td colSpan={5} className="px-6  text-center py-4 ">
                   There is no Product
                 </td>
               </tr>
-            ) : (
-              data?.map((product) => (
-                <ProductRow key={product.id} product={product} />
-              ))
-            )}
+            )} 
           </tbody>
         </table>
       </div>
+      <Pagination module={"products"} updateFetchUrl={updateFetchUrl} currentPage={data?.meta?.current_page}  links={data?.links} totalPages={data?.meta?.last_page} />
     </div>
   );
 };

@@ -1,21 +1,40 @@
-import React from "react";
-import { HiSearch } from "react-icons/hi";
-import {
-  HiComputerDesktop,
-  HiOutlinePencil,
-  HiOutlineTrash,
-  HiPlus,
-} from "react-icons/hi2";
+import React, { useRef, useState } from "react";
+import { HiSearch, HiX } from "react-icons/hi";
+import { HiComputerDesktop } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import { fetcher } from "../Api/Services";
 import VoucherListRow from "./VoucherListRow";
 import useSWR from "swr";
+import { debounce } from "lodash";
+import ProductSkeletonLoader from "./ProductSkeletonLoader";
+import Pagination from "./Pagination";
 
 const VoucherList = () => {
+  const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
+  const [search, setSearch] = useState("");
+
+  const searchRef = useRef("");
+
   const { data, isLoading } = useSWR(
-    `${import.meta.env.VITE_BASE_URL}/vouchers`,
+    url,
+
     fetcher
   );
+
+  const handleSearch = debounce((e) => {
+    setSearch(e.target.value);
+    setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers?q=${e.target.value}`);
+  }, 500);
+
+  const clearSearchHandler = () => {
+    setSearch("");
+    searchRef.current.value = "";
+    setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers`);
+  };
+const updateFetchUrl = (url) => {
+  setUrl(url)
+}
+
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -24,11 +43,21 @@ const VoucherList = () => {
             <HiSearch className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           </div>
           <input
+            ref={searchRef}
+            onChange={handleSearch}
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search voucher..."
           />
+          {search && (
+            <div
+              onClick={clearSearchHandler}
+              className=" absolute  right-2 top-0 bottom-0 m-auto"
+            >
+              <HiX fill="red" className=" h-full" />
+            </div>
+          )}
         </div>
         <Link
           to={"/sales"}
@@ -66,7 +95,16 @@ const VoucherList = () => {
             </tr>
           </thead>
           <tbody>
-            {!isLoading && !data ? (
+            {isLoading && (
+              <>
+                {Array.from({ length: 5 }, (_, index) => index + 1).map(
+                  (el) => (
+                    <ProductSkeletonLoader key={el} />
+                  )
+                )}
+              </>
+            )}
+            {!isLoading && data?.data?.length == 0 ? (
               <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
                 <td colSpan={5} className="px-6  text-center py-4 ">
                   There is no Voucher
@@ -75,11 +113,18 @@ const VoucherList = () => {
             ) : (
               ""
             )}
-            {data?.map((voucher) => (
+            {data?.data?.map((voucher) => (
               <VoucherListRow key={voucher.voucher_id} voucher={voucher} />
             ))}
           </tbody>
         </table>
+        <Pagination
+        module={"vouchers"}
+          updateFetchUrl={updateFetchUrl}
+          currentPage={data?.meta?.current_page}
+          links={data?.links}
+          totalPages={data?.meta?.last_page}
+        />
       </div>
     </div>
   );

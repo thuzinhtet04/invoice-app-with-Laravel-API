@@ -4,14 +4,14 @@ import VoucherTableRow from './VoucherTableRow'
 
 const VoucherTable = () => {
 const {records} = useRecordStore()
-
+console.log(records)
     let total = records.reduce( (a,b) => a+b.cost , 0)
     let tax = total * 0.05;
     let netTotal = total + tax
 
 
   return (
-    <div className="relative shadow-md sm:rounded-lg overflow-hidden mb-5">
+    <div className="relative shadow-md sm:rounded-lg overflow-hidden ">
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
       <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
         <tr className=" ">
@@ -45,7 +45,7 @@ const {records} = useRecordStore()
         )}
 
         {records.map((record, index) => (
-          <VoucherTableRow key={record.id} record={record} index={index} />
+          <VoucherTableRow key={record.product_id} record={record} index={index} />
         ))}
       </tbody>
       <tfoot>

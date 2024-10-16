@@ -46,9 +46,10 @@ const ProductEditCard = ({ id }) => {
 
     const updateProduct = {
       id,
-      name: value.editName.trim(),
+      product_name: value.editName.trim(),
       price: value.editPrice,
-      createat: data.createat,
+      created_at: data?.data?.created_at,
+
     };
     nav("/products");
 
@@ -68,7 +69,7 @@ const ProductEditCard = ({ id }) => {
       <div className="flex flex-col justify-center mb-4">
         <label htmlFor="createName"> Product Name</label>
         <input
-          defaultValue={data?.name}
+          defaultValue={data?.data?.product_name}
           type="text"
           {...register("editName")}
           id="editName"
@@ -83,7 +84,7 @@ const ProductEditCard = ({ id }) => {
         <label htmlFor="editPrice"> Product Price</label>
         <input
           {...register("editPrice", { valueAsNumber: true })}
-          defaultValue={data?.price}
+          defaultValue={data?.data?.price}
           type="number"
           id="editPrice"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500   p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

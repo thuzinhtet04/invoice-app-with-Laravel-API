@@ -13,56 +13,25 @@
       "price": 3000
     },
     {
-      "id": 3,
-      "name": "E-Commerce Website Setup",
-      "createat": "2034-09-26T10:00:00Z",
-      "price": 2500
-    },
-    {
-      "id": 4,
-      "name": "Custom Web Application",
-      "createat": "2034-09-27T08:45:00Z",
-      "price": 5000
-    },
-    {
       "id": 5,
       "name": "WordPress Website Development",
       "createat": "2034-09-28T11:15:00Z",
       "price": 1800
     },
     {
-      "id": 6,
-      "name": "Website Maintenance & Support",
-      "createat": "2034-09-29T16:30:00Z",
-      "price": 1000
+      "name": "2222",
+      "price": 233,
+      "createat": "2024-10-05T15:27:43.337Z",
+      "id": 6
+    },
+    {
+      "name": "sdfgh",
+      "price": 234,
+      "createat": "2024-10-05T15:28:11.389Z",
+      "id": 7
     }
   ],
   "vouchers": [
-    {
-      "voucher_id": "INV-20241002-4576",
-      "customer_name": "asd",
-      "customer_email": "kokohtet142004@gmail.com",
-      "sale_date": "2024-10-02",
-      "all_correct": true,
-      "records": [
-        {
-          "id": 1727864478209,
-          "product": {
-            "id": 5,
-            "name": "WordPress Website Development",
-            "createat": "2034-09-28T11:15:00Z",
-            "price": 1800
-          },
-          "quantity": 45,
-          "cost": 81000,
-          "created_at": "2024-10-02T10:21:18.209Z"
-        }
-      ],
-      "total": 81000,
-      "tax": 5670.000000000001,
-      "netTotal": 86670,
-      "id": 1
-    },
     {
       "voucher_id": "INV-20241002-8781",
       "customer_name": "asd",
@@ -114,32 +83,6 @@
       "tax": 1680.0000000000002,
       "netTotal": 25680,
       "id": 3
-    },
-    {
-      "voucher_id": "INV-20241002-1100",
-      "customer_name": "vvvvvvv",
-      "customer_email": "kokohtet142004@gmail.com",
-      "sale_date": "2024-10-02",
-      "all_correct": true,
-      "goVoucher": true,
-      "records": [
-        {
-          "id": 1727864708767,
-          "product": {
-            "id": 2,
-            "name": "Full-Stack Web Development",
-            "createat": "2034-09-25T14:30:00Z",
-            "price": 3000
-          },
-          "quantity": 8,
-          "cost": 24000,
-          "created_at": "2024-10-02T10:25:08.767Z"
-        }
-      ],
-      "total": 24000,
-      "tax": 1680.0000000000002,
-      "netTotal": 25680,
-      "id": 4
     }
   ]
 }
