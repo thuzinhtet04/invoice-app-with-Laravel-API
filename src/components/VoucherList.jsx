@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { HiSearch, HiX } from "react-icons/hi";
 import { HiComputerDesktop } from "react-icons/hi2";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { fetcher } from "../Api/Services";
 import VoucherListRow from "./VoucherListRow";
 import useSWR from "swr";
@@ -13,10 +13,15 @@ const VoucherList = () => {
   const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
   const [search, setSearch] = useState("");
 
+  console.log("this is rerender");
+  const [searchParam, setSearchParam] = useSearchParams();
+  console.log(Object.fromEntries(searchParam.entries()));
   const searchRef = useRef("");
-
+  const param = Object.fromEntries(searchParam.entries());
+  const strParam = new URLSearchParams(param).toString();
+  console.log(strParam);
   const { data, isLoading } = useSWR(
-    url,
+    url + "?" + strParam,
 
     fetcher
   );
@@ -25,15 +30,18 @@ const VoucherList = () => {
     setSearch(e.target.value);
     setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers?q=${e.target.value}`);
   }, 500);
-
+  const goPagination = (paramObj) => {
+    setSearchParam(paramObj);
+    console.log("you update the URL bar")
+  };
   const clearSearchHandler = () => {
     setSearch("");
     searchRef.current.value = "";
     setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers`);
   };
-const updateFetchUrl = (url) => {
-  setUrl(url)
-}
+  const updateFetchUrl = (url) => {
+    setUrl(url);
+  };
 
   return (
     <div>
@@ -60,7 +68,7 @@ const updateFetchUrl = (url) => {
           )}
         </div>
         <Link
-          to={"/sales"}
+          to={"/dashboard/sales"}
           className="p-2.5 ms-2 text-sm flex items-center gap-3 font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Create Sale
@@ -75,11 +83,9 @@ const updateFetchUrl = (url) => {
                 Voucher ID
               </th>
               <th scope="col" className="px-6 py-3">
-                Customer name
+                Customer
               </th>
-              <th scope="col" className="px-6 py-3">
-                Email
-              </th>
+
               <th
                 scope="col"
                 className="px-6 py-3 text-right whitespace-nowrap"
@@ -119,11 +125,10 @@ const updateFetchUrl = (url) => {
           </tbody>
         </table>
         <Pagination
-        module={"vouchers"}
+          goPagination={goPagination}
+          helo="helo"
           updateFetchUrl={updateFetchUrl}
-          currentPage={data?.meta?.current_page}
-          links={data?.links}
-          totalPages={data?.meta?.last_page}
+          meta={data?.meta}
         />
       </div>
     </div>

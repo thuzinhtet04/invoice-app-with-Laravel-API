@@ -7,22 +7,28 @@ import { HiPlus } from "react-icons/hi2";
 
 import ProductRow from "./ProductRow";
 import ProductSkeletonLoader from "./ProductSkeletonLoader";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { debounce } from "lodash";
 import Pagination from "./Pagination";
+import useCookie from "react-use-cookie";
 
 const ProductList = () => {
-  const [url, setUrl] = useState( import.meta.env.VITE_BASE_URL + "/products"
+const location = useLocation()
+
+
+
+  const [url, setUrl] = useState( import.meta.env.VITE_BASE_URL + "/products" + location.search
 );
 const [search ,setSearch] = useState("")
 
 const ref = useRef("")
 
   const searchRef = useRef("");
+  const [token] = useCookie("my-token")
+console.log(location.search)
 
-  const { data , isLoading , isFetching } = useSWR(url,
-    fetcher 
-  );
+  const { data , isLoading , isFetching } = useSWR( [url, token] , fetcher)
+  ;
 
 
 
@@ -43,7 +49,7 @@ const updateFetchUrl = (url) => {
 }
 
 
-
+console.log(data)
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -70,7 +76,7 @@ const updateFetchUrl = (url) => {
           )}
         </div>
         <Link
-          to="/products/create"
+          to="/dashboard/products/create"
           className="p-2.5 ms-2 text-sm flex items-center gap-3 font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Add New Product
@@ -138,7 +144,7 @@ const updateFetchUrl = (url) => {
           </tbody>
         </table>
       </div>
-      <Pagination module={"products"} updateFetchUrl={updateFetchUrl} currentPage={data?.meta?.current_page}  links={data?.links} totalPages={data?.meta?.last_page} />
+      <Pagination   updateFetchUrl={updateFetchUrl}   meta={data?.meta} />
     </div>
   );
 };

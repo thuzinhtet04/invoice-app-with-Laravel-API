@@ -44,7 +44,7 @@ const ProductRow = ({ product: { id, product_name, created_at, updated_at, price
       <td className="px-6 py-4 text-right">
         <div className="flex gap-2 group justify-end items-center">
           <Link
-            to={`/products/edit/${id}`}
+            to={`/dashboard/products/edit/${id}`}
             className="font-medium flex items-center  hover:scale-125 text-gray-600 size-5 dark:text-blue-500 hover:underline"
           >
             <HiOutlinePencil />

@@ -3,8 +3,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import { z } from "zod";
-import { fetcher } from "../Api/Services";
+
 import useRecordStore from "../Store/useRecordStore";
+import { fetcher } from "../Api/Services";
 
 const SaleForm = () => {
   const saleFormSchema = z.object({

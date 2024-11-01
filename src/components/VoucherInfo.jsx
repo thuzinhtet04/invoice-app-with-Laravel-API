@@ -77,7 +77,7 @@ const VoucherInfo = () => {
     console.log(res, "res");
 
     if (data.goVoucher) {
-      nav(`/voucher-detail/${res.voucher.id}`);
+      nav(`/dashboard/voucher-detail/${res.data.id}`);
       
     }
 

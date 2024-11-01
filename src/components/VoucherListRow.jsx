@@ -21,19 +21,19 @@ toast.success( "you delete voucher successfully ")
     <td className="px-6 py-4">{voucher_id}</td>
     <th
       scope="row"
-      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+      className="px-6 py-4 font-medium  whitespace-nowrap flex flex-col justify-center dark:text-white"
     >
-{customer_name}
+<span className='font-bold text-gray-900'>{customer_name}</span>
+<span className=' text-sm'>{customer_email}</span>
     </th>
 
-    <td className="px-6 py-4">{customer_email}</td>
     <td className="px-6 py-4 text-right text-nowrap">
 <ShowDate  date={sale_date}/>
     </td>
     <td className="px-6 py-4 text-right">
       <div className="flex justify-end">
       <Link
-          to={`/voucher-detail/${id}`}
+          to={`/dashboard/voucher-detail/${id}`}
           className="font-medium size-10 flex justify-center items-center text-blue-600 p-1 dark:text-blue-500 border rounded-l-md"
         >
           <HiOutlineArrowRight />

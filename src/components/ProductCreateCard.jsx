@@ -7,8 +7,11 @@ import useSWRMutation from 'swr/mutation'
 import { z } from 'zod'
 import { addNewProduct } from '../Api/Services'
 import 'ldrs/leapfrog'
+import useCookie from 'react-use-cookie'
 
 const ProductCreateCard = () => {
+  const [token] = useCookie("my-token")
+
   const createFormSchema = z.object({
     createName : z.string().min(3 ,"too short").max(10 , "too long"),
     createPrice : z.number({ invalid_type_error : "please fill number"}).max(10000 , "too expensive").min(100, "too cheap").positive("enter positive number"),
@@ -18,10 +21,10 @@ const ProductCreateCard = () => {
  
   })
   const nav = useNavigate()
-  const { handleSubmit ,reset  , register , formState : {errors} , getValues} = useForm( {
+  const { handleSubmit ,reset  , register , formState : {errors} } = useForm( {
     resolver: zodResolver(createFormSchema), mode : "onSubmit" , reValidateMode : "onBlur"
   })
-  const {trigger , isMutating } = useSWRMutation(`${import.meta.env.VITE_BASE_URL}/products` , addNewProduct )
+  const {trigger , isMutating } = useSWRMutation(`${import.meta.env.VITE_BASE_URL}/products` , (url , {arg} ) =>  addNewProduct(url , arg , token) )
   const onCreateSubmit =async (data) => {
     
 const newProduct ={
@@ -32,7 +35,7 @@ const newProduct ={
 
     await trigger(newProduct)
     reset()
-if(data.goback) nav("/products")
+if(data.goback) nav("/dashboard/products")
     toast.success("create successfully")
   }
 

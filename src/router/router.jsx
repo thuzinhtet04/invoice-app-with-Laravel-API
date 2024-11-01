@@ -9,44 +9,85 @@ import VoucherPage from "../Pages/Voucher.page";
 import ProductCreatePage from "../Pages/ProductCreate.page";
 import ProductEditCard from "../components/ProductEditCard";
 import ProductEditPage from "../Pages/ProductEdit.page";
+import LoginPage from "../Pages/Login.page";
+import RegisterPage from "../Pages/Register.page";
+import ProfilePage from "../Pages/Profile.page";
+import ChangeNamePage from "../Pages/ChangeName.page";
+import ChangePhotoPage from "../Pages/ChangePhoto.page";
+import ChangePasswordPage from "../Pages/ChangePassword.page";
 
 const router = createBrowserRouter([
-    {
-        path : "/",
-        element : <Layout/>,
-        errorElement : <NotFoundPage/>,
-        children : [{
-            index : true,
-            element : <DashboardPage />
+  {
+    path: "/",
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        element: <LoginPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "/dashboard",
+        element: <Layout />,
 
-        },
-        {
-            path : "/products",
-            element : <ProductsPage/>
-        },
-        {
-            path : "/products/create", 
-            element : <ProductCreatePage />
-        },
-        {
-            path : "/products/edit/:id" , 
-            element : <ProductEditPage />
-        },
-        {
-            path : "/Sales",
-            element : <SalesPage />
-        },
-        {
-            path : "voucher",
-            element : <VoucherPage />
-        },
-        {
-            path : "/voucher-detail/:id",
-            element : <VoucherDetailPage />
-        }
-    ]
-    }
-]
-    
-)
+        children: [
+          {
+            index: true,
+            element: <DashboardPage />,
+          },
+
+          {
+            path: "products",
+            element: <ProductsPage />,
+          },
+          {
+            path: "products/create",
+            element: <ProductCreatePage />,
+          },
+          {
+            path: "products/edit/:id",
+            element: <ProductEditPage />,
+          },
+          {
+            path: "sales",
+            element: <SalesPage />,
+          },
+          {
+            path: "voucher",
+            element: <VoucherPage />,
+          },
+          {
+            path: "voucher-detail/:id",
+            element: <VoucherDetailPage />,
+          },
+          {
+            path: "user-profile",
+
+            children: [
+              {
+                index: true,
+                element: <ProfilePage />,
+              },
+              {
+                path: "change-name",
+                element: <ChangeNamePage />,
+              },
+              {
+                path: "change-photo",
+                element: <ChangePhotoPage />,
+              },
+              {
+                path: "change-password",
+                element: <ChangePasswordPage />,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]);
 export default router;
