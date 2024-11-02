@@ -2,6 +2,7 @@ import React from "react";
 import { removeCookie } from "react-use-cookie";
 
 import { useNavigate } from "react-router-dom";
+import { remove } from "lodash";
 
 const Logout = () => {
   const nav = useNavigate();
@@ -10,6 +11,7 @@ const Logout = () => {
     console.log("loutout");
     removeCookie("my-token");
     removeCookie("user");
+    removeCookie("remember")
 
     nav("/");
   };

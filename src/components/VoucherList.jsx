@@ -1,5 +1,10 @@
 import React, { useRef, useState } from "react";
-import { HiSearch, HiX } from "react-icons/hi";
+import {
+  HiChevronDoubleDown,
+  HiChevronDoubleUp,
+  HiSearch,
+  HiX,
+} from "react-icons/hi";
 import { HiComputerDesktop } from "react-icons/hi2";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { fetcher } from "../Api/Services";
@@ -11,10 +16,9 @@ import Pagination from "./Pagination";
 
 const VoucherList = () => {
   const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
-  const [search, setSearch] = useState("");
-
-  console.log("this is rerender");
   const [searchParam, setSearchParam] = useSearchParams();
+  const [search, setSearch] = useState(searchParam.get("q"));
+
   console.log(Object.fromEntries(searchParam.entries()));
   const searchRef = useRef("");
   const param = Object.fromEntries(searchParam.entries());
@@ -26,21 +30,44 @@ const VoucherList = () => {
     fetcher
   );
 
-  const handleSearch = debounce((e) => {
-    setSearch(e.target.value);
-    setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers?q=${e.target.value}`);
-  }, 500);
+  const handleSearch = (e) => {
+    const debouceFun = debounce(() => {
+      setSearch(e.target.value);
+
+      if (e.target.value) {
+        setSearchParam({
+          ...Object.fromEntries(searchParam),
+          q: e.target.value,
+        });
+      } else {
+        setSearch("");
+        setSearchParam({});
+      }
+
+      // setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers?q=${e.target.value}`);
+    }, 500);
+    debouceFun();
+  };
+
   const goPagination = (paramObj) => {
     setSearchParam(paramObj);
-    console.log("you update the URL bar")
+    console.log("you update the URL bar");
   };
   const clearSearchHandler = () => {
     setSearch("");
     searchRef.current.value = "";
-    setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers`);
+    // setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers`);
+    setSearchParam({});
   };
   const updateFetchUrl = (url) => {
     setUrl(url);
+  };
+  const handleSort = (sortBy, direction) => {
+    setSearchParam({
+      ...Object.fromEntries(searchParam),
+      sort_by: sortBy,
+      sort_direction: direction,
+    });
   };
 
   return (
@@ -53,6 +80,7 @@ const VoucherList = () => {
           <input
             ref={searchRef}
             onChange={handleSearch}
+            defaultValue={search ? searchParam.get("q") : ""}
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -79,11 +107,48 @@ const VoucherList = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
-                Voucher ID
+              <th scope="col" className="px-6 py-3 flex items-end gap-3">
+                <div className=" flex flex-col">
+                  <button
+                    className=" hover:bg-gray-300"
+                    onClick={handleSort.bind(null, "id", "desc")}
+                  >
+                    <HiChevronDoubleUp />
+                  </button>
+                  <button
+                    className=" hover:bg-gray-300"
+                    onClick={handleSort.bind(null, "id", "asc")}
+                  >
+                    <HiChevronDoubleDown />
+                  </button>
+                </div>
+                <span>ID</span>
+              </th>
+              <th scope="col" className="px-6 py-3 ">
+                <span> Voucher ID</span>
               </th>
               <th scope="col" className="px-6 py-3">
                 Customer
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 flex items-end justify-end gap-3 "
+              >
+                <div className=" flex flex-col">
+                  <button
+                    className=" hover:bg-gray-300"
+                    onClick={handleSort.bind(null, "total", "desc")}
+                  >
+                    <HiChevronDoubleUp />
+                  </button>
+                  <button
+                    className=" hover:bg-gray-300"
+                    onClick={handleSort.bind(null, "id", "asc")}
+                  >
+                    <HiChevronDoubleDown />
+                  </button>
+                </div>
+                <span>Total</span>
               </th>
 
               <th
@@ -92,11 +157,8 @@ const VoucherList = () => {
               >
                 Date
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-right">
                 Action
-              </th>
-              <th scope="col" className="px-6 py-3">
-                <span className="sr-only">Edit</span>
               </th>
             </tr>
           </thead>
@@ -124,12 +186,7 @@ const VoucherList = () => {
             ))}
           </tbody>
         </table>
-        <Pagination
-          goPagination={goPagination}
-          helo="helo"
-          updateFetchUrl={updateFetchUrl}
-          meta={data?.meta}
-        />
+        <Pagination goPagination={goPagination} meta={data?.meta} />
       </div>
     </div>
   );

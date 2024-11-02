@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { HiSearch, HiX } from "react-icons/hi";
+import { HiChevronDoubleUp,HiChevronDoubleDown, HiSearch, HiX } from "react-icons/hi";
 
 import useSWR from "swr";
 import { fetcher } from "../Api/Services";
@@ -13,43 +13,60 @@ import Pagination from "./Pagination";
 import useCookie from "react-use-cookie";
 
 const ProductList = () => {
-const location = useLocation()
 
+  const [searchParam, setSearchParam] = useSearchParams();
+  console.log(Object.fromEntries(searchParam.entries()));
 
+  const param = Object.fromEntries(searchParam.entries());
+  const strParam = new URLSearchParams(param).toString();
+  console.log(strParam);
 
-  const [url, setUrl] = useState( import.meta.env.VITE_BASE_URL + "/products" + location.search
-);
-const [search ,setSearch] = useState("")
+  const [url, setUrl] = useState(
+    import.meta.env.VITE_BASE_URL + "/products" 
+  );
+  const [search, setSearch] = useState(searchParam.get("q"));
 
-const ref = useRef("")
+  const ref = useRef("");
 
-  const searchRef = useRef("");
-  const [token] = useCookie("my-token")
-console.log(location.search)
-
-  const { data , isLoading , isFetching } = useSWR( [url, token] , fetcher)
-  ;
-
-
-
-const handleSearch = debounce((e) => {
-  setUrl(import.meta.env.VITE_BASE_URL + "/products?q=" + e.target.value);
-  setSearch(e.target.value)
+  const [token] = useCookie("my-token");
   
-}, 500);
+console.log(Object.fromEntries(searchParam))
+  const { data, isLoading, isFetching } = useSWR(url + "?" + strParam, fetcher);
+  const handleSearch = (e) => {
+    const debouceFun = debounce(() => {
+      console.log("helo");
+      setSearch(e.target.value);
 
+      if (e.target.value) {
+        setSearchParam({ ...Object.fromEntries(searchParam) , q : e.target.value} );
+      } else {
+        setSearch("");
+        setSearchParam({} );
+      }
 
-const clearSearchHandler = () => {
-  setSearch("");
-  ref.current.value = null;
-  setUrl(import.meta.env.VITE_BASE_URL + "/products")
-};
-const updateFetchUrl = (url) => {
-  setUrl(url)
-}
+      // setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers?q=${e.target.value}`);
+    }, 500);
+    debouceFun();
+  };
 
+  const clearSearchHandler = () => {
+    setSearch("");
+    ref.current.value = null;
+    setSearchParam({});
+  };
+  const updateFetchUrl = (url) => {
+    setUrl(url);
+  };
+  const goPagination = (paramObj) => {
+    setSearchParam(paramObj);
+    console.log("you update the URL bar");
+  };
+  const handleSort = (sortBy, direction) => {
 
-console.log(data)
+    setSearchParam( { ...Object.fromEntries(searchParam) ,   sort_by: sortBy, sort_direction: direction });
+  };
+
+  console.log(data);
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -60,7 +77,7 @@ console.log(data)
           <input
             ref={ref}
             onChange={handleSearch}
-            
+            defaultValue={search ? searchParam.get("q") : ""}
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -88,13 +105,41 @@ console.log(data)
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 flex items-end gap-3">
+                <div className=" flex flex-col">
+                  <button
+                    className=" hover:bg-gray-300"
+                    onClick={handleSort.bind(null, "id", "desc")}
+                  >
+                    <HiChevronDoubleUp />
+                  </button>
+                  <button
+                    className=" hover:bg-gray-300"
+                    onClick={handleSort.bind(null, "id", "asc")}
+                  >
+                    <HiChevronDoubleDown />
+                  </button>
+                </div>
                 #
               </th>
               <th scope="col" className="px-6 py-3">
                 Product name
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 flex items-end gap-3">
+              <div className=" flex flex-col">
+                  <button
+                    className=" hover:bg-gray-300"
+                    onClick={handleSort.bind(null, "price", "desc")}
+                  >
+                    <HiChevronDoubleUp />
+                  </button>
+                  <button
+                    className=" hover:bg-gray-300"
+                    onClick={handleSort.bind(null, "price", "asc")}
+                  >
+                    <HiChevronDoubleDown />
+                  </button>
+                </div>
                 Price
               </th>
               <th
@@ -132,7 +177,6 @@ console.log(data)
               data?.data?.map((product) => (
                 <ProductRow key={product.id} product={product} />
               ))}
-      
 
             {data?.data?.length == 0 && !isLoading && (
               <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
@@ -140,11 +184,15 @@ console.log(data)
                   There is no Product
                 </td>
               </tr>
-            )} 
+            )}
           </tbody>
         </table>
       </div>
-      <Pagination   updateFetchUrl={updateFetchUrl}   meta={data?.meta} />
+      <Pagination
+        goPagination={goPagination}
+ 
+        meta={data?.meta}
+      />
     </div>
   );
 };
