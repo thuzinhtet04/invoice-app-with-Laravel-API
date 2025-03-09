@@ -26,11 +26,10 @@ const ProductCreateCard = () => {
   })
   const {trigger , isMutating } = useSWRMutation(`${import.meta.env.VITE_BASE_URL}/products` , (url , {arg} ) =>  addNewProduct(url , arg , token) )
   const onCreateSubmit =async (data) => {
-    
 const newProduct ={
-  product_name : data.createName.trim(),
+  name : data.createName.trim(),
   price: data.createPrice,
-  create_at : new Date().toISOString(),
+  createat : new Date().toISOString(),
 }
 
     await trigger(newProduct)

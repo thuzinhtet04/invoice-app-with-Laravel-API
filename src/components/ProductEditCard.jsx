@@ -51,10 +51,9 @@ console.log(data , "edit")
 
     const updateProduct = {
       id,
-      product_name: value.editName.trim(),
+      name: value.editName.trim(),
       price: value.editPrice,
-      created_at: data?.data?.created_at,
-
+      createat: data.createat,
     };
 
    const res =  await trigger(updateProduct);
@@ -96,7 +95,7 @@ console.log(data , "edit")
         <label htmlFor="editPrice"> Product Price</label>
         <input
           {...register("editPrice", { valueAsNumber: true })}
-          defaultValue={data?.data?.price}
+          defaultValue={data?.price}
           type="number"
           id="editPrice"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500   p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

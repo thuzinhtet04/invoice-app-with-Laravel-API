@@ -1,75 +1,21 @@
-import React, { useRef, useState } from "react";
+import React from "react";
+import { HiSearch } from "react-icons/hi";
 import {
-  HiChevronDoubleDown,
-  HiChevronDoubleUp,
-  HiSearch,
-  HiX,
-} from "react-icons/hi";
-import { HiComputerDesktop } from "react-icons/hi2";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+  HiComputerDesktop,
+  HiOutlinePencil,
+  HiOutlineTrash,
+  HiPlus,
+} from "react-icons/hi2";
+import { Link } from "react-router-dom";
 import { fetcher } from "../Api/Services";
 import VoucherListRow from "./VoucherListRow";
 import useSWR from "swr";
-import { debounce } from "lodash";
-import ProductSkeletonLoader from "./ProductSkeletonLoader";
-import Pagination from "./Pagination";
 
 const VoucherList = () => {
-  const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
-  const [searchParam, setSearchParam] = useSearchParams();
-  const [search, setSearch] = useState(searchParam.get("q"));
-
-  console.log(Object.fromEntries(searchParam.entries()));
-  const searchRef = useRef("");
-  const param = Object.fromEntries(searchParam.entries());
-  const strParam = new URLSearchParams(param).toString();
-  console.log(strParam);
   const { data, isLoading } = useSWR(
-    url + "?" + strParam,
-
+    `${import.meta.env.VITE_BASE_URL}/vouchers`,
     fetcher
   );
-
-  const handleSearch = (e) => {
-    const debouceFun = debounce(() => {
-      setSearch(e.target.value);
-
-      if (e.target.value) {
-        setSearchParam({
-          ...Object.fromEntries(searchParam),
-          q: e.target.value,
-        });
-      } else {
-        setSearch("");
-        setSearchParam({});
-      }
-
-      // setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers?q=${e.target.value}`);
-    }, 500);
-    debouceFun();
-  };
-
-  const goPagination = (paramObj) => {
-    setSearchParam(paramObj);
-    console.log("you update the URL bar");
-  };
-  const clearSearchHandler = () => {
-    setSearch("");
-    searchRef.current.value = "";
-    // setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers`);
-    setSearchParam({});
-  };
-  const updateFetchUrl = (url) => {
-    setUrl(url);
-  };
-  const handleSort = (sortBy, direction) => {
-    setSearchParam({
-      ...Object.fromEntries(searchParam),
-      sort_by: sortBy,
-      sort_direction: direction,
-    });
-  };
-
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -78,22 +24,11 @@ const VoucherList = () => {
             <HiSearch className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           </div>
           <input
-            ref={searchRef}
-            onChange={handleSearch}
-            defaultValue={search ? searchParam.get("q") : ""}
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search voucher..."
           />
-          {search && (
-            <div
-              onClick={clearSearchHandler}
-              className=" absolute  right-2 top-0 bottom-0 m-auto"
-            >
-              <HiX fill="red" className=" h-full" />
-            </div>
-          )}
         </div>
         <Link
           to={"/dashboard/sales"}
@@ -163,16 +98,7 @@ const VoucherList = () => {
             </tr>
           </thead>
           <tbody>
-            {isLoading && (
-              <>
-                {Array.from({ length: 5 }, (_, index) => index + 1).map(
-                  (el) => (
-                    <ProductSkeletonLoader key={el} />
-                  )
-                )}
-              </>
-            )}
-            {!isLoading && data?.data?.length == 0 ? (
+            {!isLoading && !data ? (
               <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
                 <td colSpan={5} className="px-6  text-center py-4 ">
                   There is no Voucher
@@ -181,12 +107,11 @@ const VoucherList = () => {
             ) : (
               ""
             )}
-            {data?.data?.map((voucher) => (
+            {data?.map((voucher) => (
               <VoucherListRow key={voucher.voucher_id} voucher={voucher} />
             ))}
           </tbody>
         </table>
-        <Pagination goPagination={goPagination} meta={data?.meta} />
       </div>
     </div>
   );
