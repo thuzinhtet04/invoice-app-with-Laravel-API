@@ -14,10 +14,11 @@ const Layout = () => {
   const [userCookie] = useCookie("user")
 
   useEffect( () => {
-    setUser( JSON.parse(userCookie))
+    // setUser( JSON.parse(userCookie))
     console.log("update user store")
   }, [])
-  if(!token & !rememberCookie) return <Navigate to="/" />
+
+  // if(!token & !rememberCookie) return <Navigate to="/" />
   return (
     <>
     <Container >
