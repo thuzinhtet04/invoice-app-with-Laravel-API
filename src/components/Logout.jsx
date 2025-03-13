@@ -7,7 +7,6 @@ const Logout = () => {
   const nav = useNavigate();
 
   const Logouthandler = () => {
-    console.log("loutout");
     removeCookie("my-token");
     removeCookie("user");
 

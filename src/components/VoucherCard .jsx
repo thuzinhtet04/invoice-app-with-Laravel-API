@@ -8,7 +8,6 @@ import reactUseCookie from 'react-use-cookie';
 const VoucherCard  = ({id}) => {
   const [token] = reactUseCookie("my-token")
     const {data, isLoading} = useSWR( `${import.meta.env.VITE_BASE_URL}/vouchers/${id}`, (url) => fetcher(url , token) )
-console.log(data)
 
     const handlePdf = () => {
         const element = document.getElementById("printArea");

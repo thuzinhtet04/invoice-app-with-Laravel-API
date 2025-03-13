@@ -30,7 +30,6 @@ const RegisterPage = () => {
    
     const onRegisterSubmit = async(data) => {
   
-        console.log(data)
         const newUserData = JSON.stringify({
             name : data.name,
             email : data.email,

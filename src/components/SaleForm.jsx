@@ -28,7 +28,6 @@ const SaleForm = () => {
   (url) =>
       fetcher(url, token)
   );
-  console.log(data)
   const onSubmit = async (data) => {
     const currentProduct = JSON.parse(data.product);
     const currentProductId = currentProduct.id;

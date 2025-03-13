@@ -5,7 +5,6 @@ import Breadcrumb from '../components/Breadcrumb'
 
 const ProductEditPage = () => {
     const {id} = useParams()
-    console.log(id)
   return (
 <section>
         <Breadcrumb currentPage="ProductEdit" link={[{name : "product" , path : "/dashboard/products"}]} />

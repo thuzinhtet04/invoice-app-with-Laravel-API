@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
   const { user } = useUserStore();
-  const [helo, setHelo] = useState(false);
-  console.log(user);
   return (
     <section>
       <Container>

@@ -14,7 +14,6 @@ import useCookie from "react-use-cookie";
 
 const ProductList = () => {
   const location = useLocation();
-  console.log(location);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [url, setUrl] = useState(
@@ -45,7 +44,6 @@ const ProductList = () => {
     setUrl(url);
   };
 
-  console.log(data);
   return (
     <div>
       <div className="flex  justify-between mb-3">

@@ -4,8 +4,6 @@ import api from "./axiosInstance";
 
 export const fetcher = async (url, token) => {
 
-    console.log('you fetching data')
-    console.log(token)
 
 
     const res = await api.get(url, {
@@ -20,7 +18,6 @@ export const fetcher = async (url, token) => {
 };
 
 export const deleteProduct = async (url, { arg }) => {
-    console.log("delete start",)
     await api.delete(url, {
         headers: {
             Authorization: `Bearer ${arg.token}`
@@ -44,7 +41,6 @@ export const addNewProduct = async (url, arg, token) => {
 
 }
 export const updateProduct = async (url, arg, token) => {
-    console.log(url)
     const res = await api.put(url, arg, {
         headers: {
             Authorization: `Bearer ${token}`
@@ -54,7 +50,6 @@ export const updateProduct = async (url, arg, token) => {
 
 }
 export const createVoucher = async (url,  {arg }) => {
-    console.log(arg)
     const res = await api.post(url, arg.currentVoucher , {
         headers : {
             Authorization : `Bearer ${arg.token}`

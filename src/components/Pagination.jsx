@@ -5,20 +5,17 @@ const Pagination = ({  updateFetchUrl , meta  , goPagination , ...rest } ) => {
   // const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
 const paginationHandler = (url) => {
-  console.log(url)
   const currentUrl = new URL(url)
   const param = currentUrl.search
 
   const paramObj = new URLSearchParams(param)
   const objEntriesParam = Object.fromEntries(paramObj)
-  console.log(objEntriesParam , "paramObj")
   // updateFetchUrl(
   //   url
   // )
   goPagination(objEntriesParam)
 
 }
-console.log(rest)
 
   return (
   <div className=" flex items-stretch justify-center mt-4 ">

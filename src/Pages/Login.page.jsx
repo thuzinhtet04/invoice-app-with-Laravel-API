@@ -46,7 +46,6 @@ const LoginPage = () => {
   );
 
   const onLoginSubmit = async (data) => {
-    console.log(data);
     const LoginData = JSON.stringify({
       email: data.email,
       password: data.password,
@@ -58,7 +57,6 @@ const LoginPage = () => {
       setToken(res.token);
       setUserCookie(JSON.stringify(res.user));
       setUser(res.user);
-      console.log(res.token);
       nav("/dashboard");
     }
   };

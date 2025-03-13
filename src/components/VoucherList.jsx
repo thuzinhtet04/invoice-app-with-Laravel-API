@@ -10,13 +10,10 @@ const VoucherList = () => {
   const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
   const [search, setSearch] = useState("");
 
-  console.log("this is rerender");
   const [searchParam, setSearchParam] = useSearchParams();
-  console.log(Object.fromEntries(searchParam.entries()));
   const searchRef = useRef("");
   const param = Object.fromEntries(searchParam.entries());
   const strParam = new URLSearchParams(param).toString();
-  console.log(strParam);
   const { data, isLoading } = useSWR(
     `${import.meta.env.VITE_BASE_URL}/vouchers`,
     fetcher
@@ -28,7 +25,6 @@ const VoucherList = () => {
   }, 500);
   const goPagination = (paramObj) => {
     setSearchParam(paramObj);
-    console.log("you update the URL bar")
   };
   const clearSearchHandler = () => {
     setSearch("");

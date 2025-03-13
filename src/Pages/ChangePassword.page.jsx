@@ -19,7 +19,6 @@ const ChangePasswordPage = () => {
   } = useForm({ mode: onsubmit });
 const new_password = watch("new_password")
   const passwordChangeHandler = async (data) => {
-    console.log(data);
     const body = JSON.stringify(data);
 
     const res = await api.post(

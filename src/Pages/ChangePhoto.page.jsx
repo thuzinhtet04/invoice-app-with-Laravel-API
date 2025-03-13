@@ -14,13 +14,10 @@ const ChangePhotoPage = () => {
     user: { profile_image, email, name },
     setUser,
   } = useUserStore();
-  console.log(userCookie, "usercookie");
-  console.log(profile_image, "profile image");
   const handleImageUploader = () => {
     inputFileRef.current.click();
   };
   const handleUpdateImage = async (e) => {
-    console.log(e.target.files[0]);
 
     const formData = new FormData();
     formData.append("profile_image", e.target.files[0]);
@@ -38,7 +35,6 @@ const ChangePhotoPage = () => {
       }
     );
     const json = await res.json();
-    console.log(json);
     if (res.status === 200) {
       setUserCookie(JSON.stringify(json.user));
       setUser(json.user);

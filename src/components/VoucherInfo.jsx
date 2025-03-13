@@ -61,7 +61,6 @@ const VoucherInfo = () => {
     createVoucher
   );
   const { records, resetRecord } = useRecordStore();
-  console.log(records, "records");
   //need to get data for voucher
   const onSubmit = async (data) => {
     const total = records.reduce((a, b) => a + b.cost, 0);
@@ -69,15 +68,16 @@ const VoucherInfo = () => {
     const net_total = total + tax;
     const currentVoucher = {
       ...data,
+
       records,
       total,
       tax,
       net_total,
     };
     const res = await trigger({ currentVoucher, token });
-    console.log(goVoucher, "go or not");
 
-    if (goVoucher) nav(`/dashboard/voucher-detail/${res.data.id}`);
+
+    if (data.goVoucher) nav(`/dashboard/voucher-detail/${res.data.id}`);
 
     reset();
     resetRecord();
@@ -211,7 +211,6 @@ const VoucherInfo = () => {
             form="infoForm"
             id="goVoucher"
             type="checkbox"
-            value=""
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
           />
           {errors.goVoucher && (

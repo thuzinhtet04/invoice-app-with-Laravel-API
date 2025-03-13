@@ -17,14 +17,12 @@ const Layout = () => {
   }
 
   useEffect(() => {
-    console.log("useeffectstart");
 
     const fetchUser = async (token) => {
       const res = await fetcher(
         import.meta.env.VITE_BASE_URL + "/user-profile/profile",
         token
       );
-console.log(res.data)
       setUserCookie(JSON.stringify(res.data));
       setUser(res.data);
     };
@@ -34,7 +32,6 @@ console.log(res.data)
     if (userCookie) {
       setUser(JSON.parse(userCookie));
     }
-    console.log("update user store");
   }, [userCookie, token]);
 
   return (

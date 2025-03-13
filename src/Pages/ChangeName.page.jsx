@@ -11,7 +11,6 @@ const ChangeNamePage = () => {
   const [userCookie, setUserCookie] = useCookie("user");
   const [token] = useCookie("my-token")
   const { user, setUser } = useUserStore();
-  console.log(user);
   const {
     handleSubmit,
     reset,
