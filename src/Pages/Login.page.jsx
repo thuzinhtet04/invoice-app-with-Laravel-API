@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../Api/Services";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -7,15 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import toast, { Toaster } from "react-hot-toast";
 import useCookie from "react-use-cookie";
-import { useUserStore } from "../Store/useUserStore";
+import {  useUserStore } from "../Store/useUserStore";
 
 const LoginPage = () => {
   const nav = useNavigate();
   const [token, setToken] = useCookie("my-token");
   const [userCookie, setUserCookie] = useCookie("user");
-  const [rememberCookie, setRememberCookie] = useCookie("remember");
   const { setUser } = useUserStore();
-  console.log(rememberCookie);
 
   const createFormSchema = z.object({
     email: z
@@ -57,18 +55,13 @@ const LoginPage = () => {
     if ((res.status = 200)) {
       toast.success("Login successfully");
       setToken(res.token);
-      setUserCookie(JSON.stringify(res.user));
+      setUserCookie(JSON.stringify( res.user));
       setUser(res.user);
-      console.log(res.token);
-      if (data.remember) {
-        setRememberCookie(res.token);
-      }
+console.log(res.token)
       nav("/dashboard");
     }
   };
-  if (rememberCookie) {
-    return <Navigate to="/dashboard" />;
-  }
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <Toaster position="top-right" />

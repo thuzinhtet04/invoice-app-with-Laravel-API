@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { HiChevronDoubleUp,HiChevronDoubleDown, HiSearch, HiX } from "react-icons/hi";
+import { HiSearch, HiX } from "react-icons/hi";
 
 import useSWR from "swr";
 import { fetcher } from "../Api/Services";
@@ -12,11 +12,43 @@ import { debounce } from "lodash";
 import Pagination from "./Pagination";
 
 const ProductList = () => {
-  const { data, isLoading, error } = useSWR(
-    import.meta.env.VITE_BASE_URL + "/products",
-    fetcher
-  );
+const location = useLocation()
 
+
+
+  const [url, setUrl] = useState( import.meta.env.VITE_BASE_URL + "/products" + location.search
+);
+const [search ,setSearch] = useState("")
+
+const ref = useRef("")
+
+  const searchRef = useRef("");
+  const [token] = useCookie("my-token")
+console.log(location.search)
+
+  const { data , isLoading , isFetching } = useSWR( [url, token] , fetcher)
+  ;
+
+
+
+const handleSearch = debounce((e) => {
+  setUrl(import.meta.env.VITE_BASE_URL + "/products?q=" + e.target.value);
+  setSearch(e.target.value)
+  
+}, 500);
+
+
+const clearSearchHandler = () => {
+  setSearch("");
+  ref.current.value = null;
+  setUrl(import.meta.env.VITE_BASE_URL + "/products")
+};
+const updateFetchUrl = (url) => {
+  setUrl(url)
+}
+
+
+console.log(data)
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -47,41 +79,13 @@ const ProductList = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3 flex items-end gap-3">
-                <div className=" flex flex-col">
-                  <button
-                    className=" hover:bg-gray-300"
-                    onClick={handleSort.bind(null, "id", "desc")}
-                  >
-                    <HiChevronDoubleUp />
-                  </button>
-                  <button
-                    className=" hover:bg-gray-300"
-                    onClick={handleSort.bind(null, "id", "asc")}
-                  >
-                    <HiChevronDoubleDown />
-                  </button>
-                </div>
+              <th scope="col" className="px-6 py-3">
                 #
               </th>
               <th scope="col" className="px-6 py-3">
                 Product name
               </th>
-              <th scope="col" className="px-6 py-3 flex items-end gap-3">
-              <div className=" flex flex-col">
-                  <button
-                    className=" hover:bg-gray-300"
-                    onClick={handleSort.bind(null, "price", "desc")}
-                  >
-                    <HiChevronDoubleUp />
-                  </button>
-                  <button
-                    className=" hover:bg-gray-300"
-                    onClick={handleSort.bind(null, "price", "asc")}
-                  >
-                    <HiChevronDoubleDown />
-                  </button>
-                </div>
+              <th scope="col" className="px-6 py-3">
                 Price
               </th>
               <th
@@ -124,7 +128,7 @@ const ProductList = () => {
           </tbody>
         </table>
       </div>
-      <Pagination module={"products"} updateFetchUrl={updateFetchUrl} currentPage={data?.meta?.current_page}  links={data?.links} totalPages={data?.meta?.last_page} />
+      <Pagination   updateFetchUrl={updateFetchUrl}   meta={data?.meta} />
     </div>
   );
 };

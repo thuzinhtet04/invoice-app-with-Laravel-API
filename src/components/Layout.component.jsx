@@ -9,7 +9,6 @@ import { useUserStore } from "../Store/useUserStore";
 
 const Layout = () => {
   const [token] = useCookie("my-token")
-  const [rememberCookie] = useCookie("remember")
   const {user, setUser} = useUserStore()
   const [userCookie] = useCookie("user")
 
@@ -17,7 +16,7 @@ const Layout = () => {
     setUser( JSON.parse(userCookie))
     console.log("update user store")
   }, [])
-  if(!token & !rememberCookie) return <Navigate to="/" />
+  if(!token) return <Navigate to="/" />
   return (
     <>
     <Container >

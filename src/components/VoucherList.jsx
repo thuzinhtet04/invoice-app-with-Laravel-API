@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { HiSearch } from "react-icons/hi";
 import {
@@ -7,15 +8,55 @@ import {
   HiPlus,
 } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+=======
+import React, { useRef, useState } from "react";
+import { HiSearch, HiX } from "react-icons/hi";
+import { HiComputerDesktop } from "react-icons/hi2";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
+>>>>>>> parent of 79785fd (fix auto update urlBar)
 import { fetcher } from "../Api/Services";
 import VoucherListRow from "./VoucherListRow";
 import useSWR from "swr";
 
 const VoucherList = () => {
+<<<<<<< HEAD
+=======
+  const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
+  const [search, setSearch] = useState("");
+
+  console.log("this is rerender");
+  const [searchParam, setSearchParam] = useSearchParams();
+  console.log(Object.fromEntries(searchParam.entries()));
+  const searchRef = useRef("");
+  const param = Object.fromEntries(searchParam.entries());
+  const strParam = new URLSearchParams(param).toString();
+  console.log(strParam);
+>>>>>>> parent of 79785fd (fix auto update urlBar)
   const { data, isLoading } = useSWR(
     `${import.meta.env.VITE_BASE_URL}/vouchers`,
     fetcher
   );
+<<<<<<< HEAD
+=======
+
+  const handleSearch = debounce((e) => {
+    setSearch(e.target.value);
+    setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers?q=${e.target.value}`);
+  }, 500);
+  const goPagination = (paramObj) => {
+    setSearchParam(paramObj);
+    console.log("you update the URL bar")
+  };
+  const clearSearchHandler = () => {
+    setSearch("");
+    searchRef.current.value = "";
+    setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers`);
+  };
+  const updateFetchUrl = (url) => {
+    setUrl(url);
+  };
+
+>>>>>>> parent of 79785fd (fix auto update urlBar)
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -24,6 +65,11 @@ const VoucherList = () => {
             <HiSearch className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           </div>
           <input
+<<<<<<< HEAD
+=======
+            ref={searchRef}
+            onChange={handleSearch}
+>>>>>>> parent of 79785fd (fix auto update urlBar)
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -42,48 +88,11 @@ const VoucherList = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3 flex items-end gap-3">
-                <div className=" flex flex-col">
-                  <button
-                    className=" hover:bg-gray-300"
-                    onClick={handleSort.bind(null, "id", "desc")}
-                  >
-                    <HiChevronDoubleUp />
-                  </button>
-                  <button
-                    className=" hover:bg-gray-300"
-                    onClick={handleSort.bind(null, "id", "asc")}
-                  >
-                    <HiChevronDoubleDown />
-                  </button>
-                </div>
-                <span>ID</span>
-              </th>
-              <th scope="col" className="px-6 py-3 ">
-                <span> Voucher ID</span>
+              <th scope="col" className="px-6 py-3">
+                Voucher ID
               </th>
               <th scope="col" className="px-6 py-3">
                 Customer
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 flex items-end justify-end gap-3 "
-              >
-                <div className=" flex flex-col">
-                  <button
-                    className=" hover:bg-gray-300"
-                    onClick={handleSort.bind(null, "total", "desc")}
-                  >
-                    <HiChevronDoubleUp />
-                  </button>
-                  <button
-                    className=" hover:bg-gray-300"
-                    onClick={handleSort.bind(null, "id", "asc")}
-                  >
-                    <HiChevronDoubleDown />
-                  </button>
-                </div>
-                <span>Total</span>
               </th>
 
               <th
@@ -92,8 +101,11 @@ const VoucherList = () => {
               >
                 Date
               </th>
-              <th scope="col" className="px-6 py-3 text-right">
+              <th scope="col" className="px-6 py-3">
                 Action
+              </th>
+              <th scope="col" className="px-6 py-3">
+                <span className="sr-only">Edit</span>
               </th>
             </tr>
           </thead>
@@ -112,6 +124,15 @@ const VoucherList = () => {
             ))}
           </tbody>
         </table>
+<<<<<<< HEAD
+=======
+        <Pagination
+          goPagination={goPagination}
+          helo="helo"
+          updateFetchUrl={updateFetchUrl}
+          meta={data?.meta}
+        />
+>>>>>>> parent of 79785fd (fix auto update urlBar)
       </div>
     </div>
   );
