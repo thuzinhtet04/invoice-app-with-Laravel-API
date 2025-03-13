@@ -1,29 +1,24 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import Container from '../components/Container'
-import Breadcrumb from '../components/Breadcrumb'
-import VoucherCard from '../components/VoucherCard '
-
-
+import React from "react";
+import { useParams } from "react-router-dom";
+import Container from "../components/Container";
+import Breadcrumb from "../components/Breadcrumb";
+import VoucherCard from "../components/VoucherCard ";
 
 const VoucherDetailPage = () => {
-    const {id} = useParams()
-   
+  const { id } = useParams();
+
   return (
     <section>
-    <Container >
-<Breadcrumb 
-        currentPage={"Voucher Detail"}
-        link={[{ name: "Voucher", path: "/voucher" }]}
+      <Container>
+        <Breadcrumb
+          currentPage={"Voucher Detail"}
+          link={[{ name: "Voucher", path: "/voucher" }]}
         />
-   
 
-       <VoucherCard id={id}  />
- 
-   
-    </Container>
-  </section>
-  )
-}
+        <VoucherCard id={id} />
+      </Container>
+    </section>
+  );
+};
 
-export default VoucherDetailPage
+export default VoucherDetailPage;

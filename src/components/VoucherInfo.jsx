@@ -10,10 +10,12 @@ import useSWRMutation from "swr/mutation";
 import { createVoucher } from "../Api/Services";
 import useRecordStore from "../Store/useRecordStore";
 import { useNavigate } from "react-router-dom";
+import reactUseCookie from "react-use-cookie";
 
 tailspin.register();
 const VoucherInfo = () => {
   const nav = useNavigate();
+  const [token] = reactUseCookie("my-token");
   const voucherFormSchema = z.object({
     voucher_id: z.string().max(20, "too long voucher ID"),
     customer_name: z.string().min(1, "you need to fill name"),
@@ -25,8 +27,7 @@ const VoucherInfo = () => {
     all_correct: z.boolean().refine((val) => val === true, {
       message: "you need to check this before you submit ",
     }),
-    goVoucher : z.boolean()
-
+    goVoucher: z.boolean(),
   });
   const {
     register,
@@ -60,22 +61,23 @@ const VoucherInfo = () => {
     createVoucher
   );
   const { records, resetRecord } = useRecordStore();
+  console.log(records, "records");
   //need to get data for voucher
   const onSubmit = async (data) => {
-
     const total = records.reduce((a, b) => a + b.cost, 0);
     const tax = total * 0.07;
-    const netTotal = total + tax;
+    const net_total = total + tax;
     const currentVoucher = {
       ...data,
       records,
       total,
       tax,
-      netTotal,
+      net_total,
     };
-    const res = await trigger(currentVoucher);
+    const res = await trigger({ currentVoucher, token });
+    console.log(goVoucher, "go or not");
 
-if(goVoucher) nav(`/voucher-detail/${res.id}`)
+    if (goVoucher) nav(`/dashboard/voucher-detail/${res.data.id}`);
 
     reset();
     resetRecord();
@@ -213,9 +215,7 @@ if(goVoucher) nav(`/voucher-detail/${res.id}`)
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
           />
           {errors.goVoucher && (
-            <p className=" text-red-400 italic ">
-              {errors.goVoucher.message}
-            </p>
+            <p className=" text-red-400 italic ">{errors.goVoucher.message}</p>
           )}
 
           <label

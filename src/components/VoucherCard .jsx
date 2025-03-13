@@ -3,9 +3,12 @@ import useSWR from 'swr';
 import { fetcher } from '../Api/Services';
 import printJS from 'print-js';
 import  html2pdf from 'html2pdf.js';
+import reactUseCookie from 'react-use-cookie';
 
 const VoucherCard  = ({id}) => {
-    const {data, isLoading} = useSWR( `${import.meta.env.VITE_BASE_URL}/vouchers/${id}`, fetcher)
+  const [token] = reactUseCookie("my-token")
+    const {data, isLoading} = useSWR( `${import.meta.env.VITE_BASE_URL}/vouchers/${id}`, (url) => fetcher(url , token) )
+console.log(data)
 
     const handlePdf = () => {
         const element = document.getElementById("printArea");
@@ -63,7 +66,7 @@ const handlePrint = () => {
           </tr>
         </thead>
         <tbody>
-          {data?.records.map((record, index) => (
+          {data?.data?.records.map((record, index) => (
             <tr key={record.id} className="border-b border-gray-200">
               <td className="py-2 text-sm">{index + 1}</td>
               <td className="py-2 text-sm">{record.product.name}</td>
@@ -80,19 +83,20 @@ const handlePrint = () => {
             <td className="py-2 text-right text-sm" colSpan={4}>
               Total
             </td>
-            <td className="py-2 text-right text-sm">{data?.total.toFixed(2)}</td>
+            <td className="py-2 text-right text-sm">{parseFloat(data?.data?.total).toFixed(2)}</td>
           </tr>
           <tr className="border-b border-gray-200">
             <td className="py-2 text-right text-sm" colSpan={4}>
               Tax
             </td>
-            <td className="py-2 text-right text-sm">{data?.tax.toFixed(2)}</td>
+            
+            <td className="py-2 text-right text-sm">{parseFloat(data?.data.tax).toFixed(2) }</td>
           </tr>
           <tr className="border-b border-gray-200">
             <td className="py-2 text-right text-sm" colSpan={4}>
               Net Total
             </td>
-            <td className="py-2 text-right text-sm">{data?.netTotal.toFixed(2)}</td>
+            <td className="py-2 text-right text-sm">{parseFloat(data?.data.net_total).toFixed(2) }</td>
           </tr>
         </tfoot>
       </table>
