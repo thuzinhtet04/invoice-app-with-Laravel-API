@@ -6,6 +6,7 @@ import {
   HiDocumentDuplicate,
 } from "react-icons/hi2";
 import Logout from "../components/Logout";
+import toast from "react-hot-toast";
 
 const DashboardPage = () => {
   return (

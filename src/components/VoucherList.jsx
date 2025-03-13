@@ -1,26 +1,12 @@
-<<<<<<< HEAD
-import React from "react";
-import { HiSearch } from "react-icons/hi";
-import {
-  HiComputerDesktop,
-  HiOutlinePencil,
-  HiOutlineTrash,
-  HiPlus,
-} from "react-icons/hi2";
-import { Link } from "react-router-dom";
-=======
 import React, { useRef, useState } from "react";
 import { HiSearch, HiX } from "react-icons/hi";
 import { HiComputerDesktop } from "react-icons/hi2";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
->>>>>>> parent of 79785fd (fix auto update urlBar)
 import { fetcher } from "../Api/Services";
 import VoucherListRow from "./VoucherListRow";
 import useSWR from "swr";
 
 const VoucherList = () => {
-<<<<<<< HEAD
-=======
   const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
   const [search, setSearch] = useState("");
 
@@ -31,13 +17,10 @@ const VoucherList = () => {
   const param = Object.fromEntries(searchParam.entries());
   const strParam = new URLSearchParams(param).toString();
   console.log(strParam);
->>>>>>> parent of 79785fd (fix auto update urlBar)
   const { data, isLoading } = useSWR(
     `${import.meta.env.VITE_BASE_URL}/vouchers`,
     fetcher
   );
-<<<<<<< HEAD
-=======
 
   const handleSearch = debounce((e) => {
     setSearch(e.target.value);
@@ -56,7 +39,6 @@ const VoucherList = () => {
     setUrl(url);
   };
 
->>>>>>> parent of 79785fd (fix auto update urlBar)
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -65,11 +47,8 @@ const VoucherList = () => {
             <HiSearch className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           </div>
           <input
-<<<<<<< HEAD
-=======
             ref={searchRef}
             onChange={handleSearch}
->>>>>>> parent of 79785fd (fix auto update urlBar)
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -124,15 +103,14 @@ const VoucherList = () => {
             ))}
           </tbody>
         </table>
-<<<<<<< HEAD
-=======
+
         <Pagination
           goPagination={goPagination}
           helo="helo"
           updateFetchUrl={updateFetchUrl}
           meta={data?.meta}
         />
->>>>>>> parent of 79785fd (fix auto update urlBar)
+
       </div>
     </div>
   );

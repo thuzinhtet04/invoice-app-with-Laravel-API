@@ -5,21 +5,29 @@ import useSWRMutation from "swr/mutation";
 import { deleteProduct } from "../Api/Services";
 import { Link } from "react-router-dom";
 import ShowDate from "./ShowDate";
+import useCookie from "react-use-cookie";
+import { mutate } from "swr";
 
-const ProductRow = ({ product: { id, name, createat, price } }) => {
+const ProductRow = ({
+  product: { id, product_name, created_at, price },
+  url,
+}) => {
+  const [token] = useCookie("my-token");
   const { trigger, isMutating } = useSWRMutation(
-    import.meta.env.VITE_BASE_URL + "/products",
+    import.meta.env.VITE_BASE_URL + "/products/" + id,
     deleteProduct,
     {
       // optimisticData : (oldData) => oldData.filter(el => el.id !== id ),
       revalidate: false,
       rollbackOnError: true,
-      populateCache: (newData, oldData) => oldData.filter((el) => el.id !== id),
+      populateCache: (newData, oldData) =>
+        oldData?.filter((el) => el.id !== id),
     }
   );
 
-  const handleDeleteBtn = () => {
-    trigger(id);
+  const handleDeleteBtn = async () => {
+    await trigger({ token });
+    mutate(url);
   };
 
   return (
@@ -29,12 +37,12 @@ const ProductRow = ({ product: { id, name, createat, price } }) => {
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
       >
-        {name}
+        {product_name}
       </th>
 
       <td className="px-6 py-4">${price}</td>
       <td className="px-6 py-4 text-right text-nowrap">
-        <ShowDate date={createat} />
+        <ShowDate date={created_at} />
       </td>
       <td className="px-6 py-4 text-right">
         <div className="flex gap-2 group justify-end items-center">

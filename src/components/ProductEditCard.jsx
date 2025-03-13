@@ -5,23 +5,23 @@ import useSWR, { mutate } from "swr";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
-import toast from "react-hot-toast";
 import { z } from "zod";
-import { fetcher , updateProduct } from "../Api/Services";
+import { fetcher, updateProduct } from "../Api/Services";
 import useCookie from "react-use-cookie";
+import toast from "react-hot-toast";
 
 const ProductEditCard = ({ id }) => {
-  const [token] = useCookie('my-token')
+  const [token] = useCookie("my-token");
   const { data, isLoading, isError } = useSWR(
-  `${import.meta.env.VITE_BASE_URL}/products/${id}`, (url) => fetcher([url, token]) , {
-
-    }
+    `${import.meta.env.VITE_BASE_URL}/products/${id}`,
+    (url) => fetcher(url , token),
+    {}
   );
-console.log(data , "edit")
+  console.log(data, "edit");
   const editSchema = z.object({
     editName: z
       .string()
-      .max(10, "too long")
+      .max(30, "too long")
       .min(3, "too short")
       .refine((val) => val.trim() !== "", {
         message: "your input is only space , please enter something",
@@ -40,7 +40,7 @@ console.log(data , "edit")
     formState: { errors },
     register,
     handleSubmit,
-    reset
+    reset,
   } = useForm({
     resolver: zodResolver(editSchema),
     mode: "onChange",
@@ -48,25 +48,22 @@ console.log(data , "edit")
 
   const nav = useNavigate();
   const editHandler = async (value) => {
-
     const updateProduct = {
       id,
-      name: value.editName.trim(),
+      product_name: value.editName.trim(),
       price: value.editPrice,
       createat: data.createat,
     };
 
-   const res =  await trigger(updateProduct);
-    reset(res.data.data)
+    const res = await trigger(updateProduct);
+    reset(res.data.data);
     nav("/dashboard/products");
     toast.success("update successfully");
   };
   const { trigger, isMutating } = useSWRMutation(
-    `${import.meta.env.VITE_BASE_URL}/products/${id}`  ,
-    (url , {arg}) => updateProduct(url , arg , token) , {
-  
-
-    }
+    `${import.meta.env.VITE_BASE_URL}/products/${id}`,
+    (url, { arg }) => updateProduct(url, arg, token),
+    {}
   );
   if (isLoading) return <p>Loading ...</p>;
 
@@ -75,7 +72,6 @@ console.log(data , "edit")
       onSubmit={handleSubmit(editHandler)}
       className=" w-full md:w-1h/2 bg-violet-300 p-5 mt-5 rounded-md "
     >
- 
       <div className="flex flex-col justify-center mb-4">
         <label htmlFor="createName"> Product Name</label>
         <input
@@ -95,7 +91,7 @@ console.log(data , "edit")
         <label htmlFor="editPrice"> Product Price</label>
         <input
           {...register("editPrice", { valueAsNumber: true })}
-          defaultValue={data?.price}
+          defaultValue={data?.data.price}
           type="number"
           id="editPrice"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500   p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -177,7 +173,7 @@ export default ProductEditCard;
 
 //   const fetcher = async(url) => {
 //     console.log(url);
- 
+
 //     const res = await fetch(url , {
 //       headers :{
 //         Authorization : `Bearer ${token}`
@@ -582,5 +578,3 @@ export default ProductEditCard;
 //     </div>
 //   );
 // };
-
-

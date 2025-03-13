@@ -2,68 +2,80 @@ import api from "./axiosInstance";
 
 
 
-export const fetcher = async (  arg ) => {
-    
+export const fetcher = async (url, token) => {
+
     console.log('you fetching data')
+    console.log(token)
 
-if(typeof(arg) === 'object'){
-    const res = await api.get( arg[0] , {headers : {
-            Authorization : `Bearer ${arg[1]}`
-         }});
-         return res.data
-}else{
-    const res = await api.get( arg )
 
+    const res = await api.get(url, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
     return res.data
-}
+
 
 
 };
 
-export const deleteProduct = async(url , {arg}) => {
-    await api.delete(url+"/"+arg)
-    
+export const deleteProduct = async (url, { arg }) => {
+    console.log("delete start",)
+    await api.delete(url, {
+        headers: {
+            Authorization: `Bearer ${arg.token}`
+        }
+    })
+
+
+
+
+
 }
-export const addNewProduct  =async (url  , arg , token) => {
-    
-    const res = await api.post(url ,arg , {
-        headers : {
-            Authorization : `Bearer ${token}`
+export const addNewProduct = async (url, arg, token) => {
+
+    const res = await api.post(url, arg, {
+        headers: {
+            Authorization: `Bearer ${token}`
         },
-        
-    } )
+
+    })
     return res.data
 
 }
-export const updateProduct = async (url , arg , token) => {
-  console.log(url)
-   const res = await api.put(url , arg , {
-    headers : {
-        Authorization : `Bearer ${token}`
-    }
-   })
-     return res.data
-    
-}
-export const createVoucher = async (url, {arg}) => {
-    const res = await api.post(url , arg)
+export const updateProduct = async (url, arg, token) => {
+    console.log(url)
+    const res = await api.put(url, arg, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
     return res.data
-    
+
 }
-export const deleteVoucher =async (url , {arg}) => {
-  
+export const createVoucher = async (url, { arg }) => {
+    const res = await api.post(url, arg)
+    return res.data
+
+}
+export const deleteVoucher = async (url, { arg }) => {
+
     await api.delete(`${url}/${arg}`)
 
 }
-export const registerUser = async (url , {arg}) => {
-    const res = await api.post(url , arg);
+export const registerUser = async (url, { arg }) => {
+    const res = await api.post(url, arg);
     return res.data
-    
+
 }
-export const changeName = async (url , arg) => {
-    const res = await api.post(url , arg )
-  
+export const changeName = async (url, arg, token) => {
+    const res = await api.post(url, arg, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+
     return res
-    
+
 }
 

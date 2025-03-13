@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 import { getCookie, removeCookie } from "react-use-cookie";
 
 const ChangePasswordPage = () => {
-  const nav = useNavigate()
-  const token = getCookie('my-token')
+  const nav = useNavigate();
+  const token = getCookie("my-token");
   const {
     handleSubmit,
     register,
@@ -17,27 +17,29 @@ const ChangePasswordPage = () => {
     watch,
     formState: { errors },
   } = useForm({ mode: onsubmit });
-  const new_password = watch("new_password");
-
+const new_password = watch("new_password")
   const passwordChangeHandler = async (data) => {
     console.log(data);
     const body = JSON.stringify(data);
-    console.log(body);
+
     const res = await api.post(
       `${import.meta.env.VITE_BASE_URL}/user-profile/change-password`,
-      
-        body,
-      
+
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-if(res.status === 200){
-  toast.success(res.data.message)
-  removeCookie("my-token")
-  removeCookie("user")
-  nav("/")
-  
-}else{
-  toast.error(res.data.message)
-}
+    if (res.status === 200) {
+      toast.success(res.data.message);
+      removeCookie("my-token");
+      removeCookie("user");
+      nav("/");
+    } else {
+      toast.error(res.data.message);
+    }
     reset();
   };
   return (

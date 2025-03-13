@@ -7,48 +7,45 @@ import { HiPlus } from "react-icons/hi2";
 
 import ProductRow from "./ProductRow";
 import ProductSkeletonLoader from "./ProductSkeletonLoader";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { debounce } from "lodash";
 import Pagination from "./Pagination";
+import useCookie from "react-use-cookie";
 
 const ProductList = () => {
-const location = useLocation()
+  const location = useLocation();
+  console.log(location);
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const [url, setUrl] = useState(
+    import.meta.env.VITE_BASE_URL + "/products" + location.search
+  );
+  const [search, setSearch] = useState("");
 
+  const ref = useRef("");
 
-  const [url, setUrl] = useState( import.meta.env.VITE_BASE_URL + "/products" + location.search
-);
-const [search ,setSearch] = useState("")
+  const [token] = useCookie("my-token");
 
-const ref = useRef("")
+  const { data, isLoading, isFetching } = useSWR(url, (url) =>
+    fetcher(url, token)
+  );
 
-  const searchRef = useRef("");
-  const [token] = useCookie("my-token")
-console.log(location.search)
+  const handleSearch = debounce((e) => {
+    setUrl(import.meta.env.VITE_BASE_URL + "/products?q=" + e.target.value);
+    setSearch(e.target.value);
+    setSearchParams({ ...Object.fromEntries(searchParams), q: e.target.value });
+  }, 500);
 
-  const { data , isLoading , isFetching } = useSWR( [url, token] , fetcher)
-  ;
+  const clearSearchHandler = () => {
+    setSearch("");
+    ref.current.value = null;
+    setUrl(import.meta.env.VITE_BASE_URL + "/products");
+  };
+  const updateFetchUrl = (url) => {
+    setUrl(url);
+  };
 
-
-
-const handleSearch = debounce((e) => {
-  setUrl(import.meta.env.VITE_BASE_URL + "/products?q=" + e.target.value);
-  setSearch(e.target.value)
-  
-}, 500);
-
-
-const clearSearchHandler = () => {
-  setSearch("");
-  ref.current.value = null;
-  setUrl(import.meta.env.VITE_BASE_URL + "/products")
-};
-const updateFetchUrl = (url) => {
-  setUrl(url)
-}
-
-
-console.log(data)
+  console.log(data);
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -59,8 +56,8 @@ console.log(data)
           <input
             ref={ref}
             onChange={handleSearch}
-            
             type="text"
+            defaultValue={searchParams.get("q")}
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search Product..."
@@ -114,9 +111,8 @@ console.log(data)
             )}
             {data?.data &&
               data?.data?.map((product) => (
-                <ProductRow key={product.id} product={product} />
+                <ProductRow key={product.id} url={url} product={product} />
               ))}
-      
 
             {data?.data?.length == 0 && !isLoading && (
               <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
@@ -124,11 +120,11 @@ console.log(data)
                   There is no Product
                 </td>
               </tr>
-            )} 
+            )}
           </tbody>
         </table>
       </div>
-      <Pagination   updateFetchUrl={updateFetchUrl}   meta={data?.meta} />
+      <Pagination updateFetchUrl={updateFetchUrl} meta={data?.meta} />
     </div>
   );
 };
