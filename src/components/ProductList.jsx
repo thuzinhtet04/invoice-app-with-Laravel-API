@@ -13,37 +13,43 @@ import Pagination from "./Pagination";
 import useCookie from "react-use-cookie";
 
 const ProductList = () => {
-  const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
+const location = useLocation()
 
-  const [url, setUrl] = useState(
-    import.meta.env.VITE_BASE_URL + "/products" + location.search
-  );
-  const [search, setSearch] = useState("");
 
-  const ref = useRef("");
 
-  const [token] = useCookie("my-token");
+  const [url, setUrl] = useState( import.meta.env.VITE_BASE_URL + "/products" + location.search
+);
+const [search ,setSearch] = useState("")
 
-  const { data, isLoading, isFetching } = useSWR(url, (url) =>
-    fetcher(url, token)
-  );
+const ref = useRef("")
 
-  const handleSearch = debounce((e) => {
-    setUrl(import.meta.env.VITE_BASE_URL + "/products?q=" + e.target.value);
-    setSearch(e.target.value);
-    setSearchParams({ ...Object.fromEntries(searchParams), q: e.target.value });
-  }, 500);
+  const searchRef = useRef("");
+  const [token] = useCookie("my-token")
+console.log(location.search)
 
-  const clearSearchHandler = () => {
-    setSearch("");
-    ref.current.value = null;
-    setUrl(import.meta.env.VITE_BASE_URL + "/products");
-  };
-  const updateFetchUrl = (url) => {
-    setUrl(url);
-  };
+  const { data , isLoading , isFetching } = useSWR( [url, token] , fetcher)
+  ;
 
+
+
+const handleSearch = debounce((e) => {
+  setUrl(import.meta.env.VITE_BASE_URL + "/products?q=" + e.target.value);
+  setSearch(e.target.value)
+  
+}, 500);
+
+
+const clearSearchHandler = () => {
+  setSearch("");
+  ref.current.value = null;
+  setUrl(import.meta.env.VITE_BASE_URL + "/products")
+};
+const updateFetchUrl = (url) => {
+  setUrl(url)
+}
+
+
+console.log(data)
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -54,6 +60,7 @@ const ProductList = () => {
           <input
             ref={ref}
             onChange={handleSearch}
+            
             type="text"
             defaultValue={searchParams.get("q")}
             id="simple-search"
@@ -111,6 +118,7 @@ const ProductList = () => {
               data?.data?.map((product) => (
                 <ProductRow key={product.id} url={url} product={product} />
               ))}
+      
 
             {data?.data?.length == 0 && !isLoading && (
               <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
@@ -118,11 +126,11 @@ const ProductList = () => {
                   There is no Product
                 </td>
               </tr>
-            )}
+            )} 
           </tbody>
         </table>
       </div>
-      <Pagination goPagination={setSearchParams} meta={data?.meta} />
+      <Pagination   updateFetchUrl={updateFetchUrl}   meta={data?.meta} />
     </div>
   );
 };

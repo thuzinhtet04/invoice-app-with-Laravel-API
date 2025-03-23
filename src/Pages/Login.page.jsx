@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../Api/Services";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import toast, { Toaster } from "react-hot-toast";
 import useCookie from "react-use-cookie";
-import { useUserStore } from "../Store/useUserStore";
+import {  useUserStore } from "../Store/useUserStore";
 
 const LoginPage = () => {
   const nav = useNavigate();
@@ -57,16 +57,14 @@ const LoginPage = () => {
       toast.success("Login successfully");
       reset();
       setToken(res.token);
-      setUserCookie(JSON.stringify(res.user));
+      setUserCookie(JSON.stringify( res.user));
       setUser(res.user);
+console.log(res.token)
       nav("/dashboard");
     } else {
       setError(res.data.message);
     }
   };
-  if (token) {
-    return <Navigate to="/dashboard" />;
-  }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <Toaster position="top-right" />

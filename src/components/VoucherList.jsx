@@ -10,7 +10,13 @@ const VoucherList = () => {
   const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
   const [search, setSearch] = useState("");
 
+<<<<<<< HEAD
   const [searchParam, setSearchParam] = useSearchParams();
+=======
+  console.log("this is rerender");
+  const [searchParam, setSearchParam] = useSearchParams();
+  console.log(Object.fromEntries(searchParam.entries()));
+>>>>>>> parent of 79785fd (fix auto update urlBar)
   const searchRef = useRef("");
   const param = Object.fromEntries(searchParam.entries());
   const strParam = new URLSearchParams(param).toString();
@@ -25,6 +31,10 @@ const VoucherList = () => {
   }, 500);
   const goPagination = (paramObj) => {
     setSearchParam(paramObj);
+<<<<<<< HEAD
+=======
+    console.log("you update the URL bar")
+>>>>>>> parent of 79785fd (fix auto update urlBar)
   };
   const clearSearchHandler = () => {
     setSearch("");
@@ -99,14 +109,20 @@ const VoucherList = () => {
             ))}
           </tbody>
         </table>
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 79785fd (fix auto update urlBar)
         <Pagination
           goPagination={goPagination}
           helo="helo"
           updateFetchUrl={updateFetchUrl}
           meta={data?.meta}
         />
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 79785fd (fix auto update urlBar)
       </div>
     </div>
   );

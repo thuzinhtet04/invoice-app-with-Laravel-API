@@ -9,6 +9,7 @@ import { fetcher } from "../Api/Services.js";
 import { getCookie } from "react-use-cookie";
 
 const Layout = () => {
+<<<<<<< HEAD
   const { user, setUser } = useUserStore();
   const [userCookie, setUserCookie] = useCookie("user");
   const token = getCookie("my-token");
@@ -34,6 +35,17 @@ const Layout = () => {
     }
   }, [userCookie, token]);
 
+=======
+  const [token] = useCookie("my-token")
+  const {user, setUser} = useUserStore()
+  const [userCookie] = useCookie("user")
+
+  useEffect( () => {
+    setUser( JSON.parse(userCookie))
+    console.log("update user store")
+  }, [])
+  if(!token) return <Navigate to="/" />
+>>>>>>> parent of 79785fd (fix auto update urlBar)
   return (
     <>
       <Container>
