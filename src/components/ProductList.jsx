@@ -14,6 +14,7 @@ import useCookie from "react-use-cookie";
 
 const ProductList = () => {
 const location = useLocation()
+const [searchParams   , setSearchParams ] = useSearchParams()
 
 
 
