@@ -122,7 +122,7 @@ const ProductList = () => {
           </tbody>
         </table>
       </div>
-      <Pagination updateFetchUrl={updateFetchUrl} meta={data?.meta} />
+      <Pagination goPagination={setSearchParams} meta={data?.meta} />
     </div>
   );
 };
