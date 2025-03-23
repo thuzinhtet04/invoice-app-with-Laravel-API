@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { registerUser } from "../Api/Services";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -12,7 +12,6 @@ import {  useUserStore } from "../Store/useUserStore";
 const LoginPage = () => {
   const nav = useNavigate();
   const [token, setToken] = useCookie("my-token");
-  const [error, setError] = useState("");
 
   const [userCookie, setUserCookie] = useCookie("user");
   const { setUser } = useUserStore();
@@ -41,7 +40,7 @@ const LoginPage = () => {
     resolver: zodResolver(createFormSchema),
     mode: onsubmit,
   });
-  let { trigger, isMutating } = useSWRMutation(
+  const { trigger, isMutating, error, data } = useSWRMutation(
     `${import.meta.env.VITE_BASE_URL}/login`,
     registerUser
   );
@@ -51,20 +50,20 @@ const LoginPage = () => {
       email: data.email,
       password: data.password,
     });
-    setError("");
+
     const res = await trigger(LoginData);
-    if (res.token) {
+    if ((res.status = 200)) {
       toast.success("Login successfully");
-      reset();
       setToken(res.token);
       setUserCookie(JSON.stringify( res.user));
       setUser(res.user);
 console.log(res.token)
       nav("/dashboard");
-    } else {
-      setError(res.data.message);
     }
   };
+  if (token) {
+   return <Navigate to="/dashboard" />
+  }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <Toaster position="top-right" />
@@ -85,12 +84,10 @@ console.log(res.token)
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
-
-            <p className=" text-red-500 capitalize">{error}</p>
-
             <form
               onSubmit={handleSubmit(onLoginSubmit)}
               className="space-y-4 md:space-y-6"
+              action="#"
             >
               <div>
                 <label
@@ -163,10 +160,9 @@ console.log(res.token)
               </div>
               <button
                 type="submit"
-                disabled={isMutating}
-                className={`w-full text-white flex justify-center items-center bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
+                className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Sign in {isMutating && <div className="animate-spin">💠</div>}
+                Sign in
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}

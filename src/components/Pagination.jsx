@@ -4,15 +4,18 @@ import { FaChevronLeft, FaChevronRight, FaObjectGroup } from "react-icons/fa";
 const Pagination = ({  updateFetchUrl , meta  , goPagination , ...rest } ) => {
   // const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-  const paginationHandler = (url) => {
-    const currentUrl = new URL(url);
-    const param = currentUrl.search;
+const paginationHandler = (url) => {
+  const currentUrl = new URL(url)
+  const param = currentUrl.search
 
-    const paramObj = new URLSearchParams(param);
-    const objEntriesParam = Object.fromEntries(paramObj);
-   
-    goPagination(objEntriesParam);
-  };
+  const paramObj = new URLSearchParams(param)
+  const objEntriesParam = Object.fromEntries(paramObj)
+  // updateFetchUrl(
+  //   url
+  // )
+  goPagination(objEntriesParam)
+
+}
 
   return (
   <div className=" flex items-stretch justify-center mt-4 ">

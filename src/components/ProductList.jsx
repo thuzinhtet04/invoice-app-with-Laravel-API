@@ -130,7 +130,7 @@ console.log(data)
           </tbody>
         </table>
       </div>
-      <Pagination   updateFetchUrl={updateFetchUrl}   meta={data?.meta} />
+      <Pagination updateFetchUrl={updateFetchUrl} meta={data?.meta} />
     </div>
   );
 };
