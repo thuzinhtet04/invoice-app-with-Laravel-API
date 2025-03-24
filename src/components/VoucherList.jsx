@@ -14,7 +14,9 @@ const VoucherList = () => {
   const [search, setSearch] = useState("");
   const [token] = useCookie("my-token");
 
+  console.log("this is rerender");
   const [searchParam, setSearchParam] = useSearchParams();
+  console.log(Object.fromEntries(searchParam.entries()));
   const searchRef = useRef("");
   const param = Object.fromEntries(searchParam.entries());
   const strParam = new URLSearchParams(param).toString();
@@ -26,6 +28,7 @@ const VoucherList = () => {
   }, 500);
   const goPagination = (paramObj) => {
     setSearchParam(paramObj);
+    console.log("you update the URL bar")
   };
   const clearSearchHandler = () => {
     setSearch("");
