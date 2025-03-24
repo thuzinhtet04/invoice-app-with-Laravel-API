@@ -24,7 +24,7 @@ const Header = () => {
                   ? profile_image
                   : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
               }
-              className=" size-12 border-white shadow-sm rounded-full"
+              className=" size-12 object-cover border-white shadow-sm rounded-full"
               alt=""
             />
             <div className="flex flex-col  ">

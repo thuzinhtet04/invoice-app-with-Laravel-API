@@ -1,23 +1,24 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HiSearch, HiX } from "react-icons/hi";
 import { HiComputerDesktop } from "react-icons/hi2";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { fetcher } from "../Api/Services";
 import VoucherListRow from "./VoucherListRow";
 import useSWR from "swr";
+import { debounce } from "lodash";
+import Pagination from "./Pagination";
+import useCookie from "react-use-cookie";
 
 const VoucherList = () => {
   const [url, setUrl] = useState(`${import.meta.env.VITE_BASE_URL}/vouchers`);
   const [search, setSearch] = useState("");
+  const [token] = useCookie("my-token");
 
   const [searchParam, setSearchParam] = useSearchParams();
   const searchRef = useRef("");
   const param = Object.fromEntries(searchParam.entries());
   const strParam = new URLSearchParams(param).toString();
-  const { data, isLoading } = useSWR(
-    `${import.meta.env.VITE_BASE_URL}/vouchers`,
-    fetcher
-  );
+  const { data, isLoading } = useSWR(url, (url) => fetcher(url, token));
 
   const handleSearch = debounce((e) => {
     setSearch(e.target.value);
@@ -31,10 +32,11 @@ const VoucherList = () => {
     searchRef.current.value = "";
     setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers`);
   };
-  const updateFetchUrl = (url) => {
-    setUrl(url);
-  };
 
+  useEffect(() => {
+    setUrl(import.meta.env.VITE_BASE_URL + "/vouchers" + location.search);
+  }, [searchParam]);
+  console.log(data)
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -94,19 +96,13 @@ const VoucherList = () => {
             ) : (
               ""
             )}
-            {data?.map((voucher) => (
+            {data?.data.map((voucher) => (
               <VoucherListRow key={voucher.voucher_id} voucher={voucher} />
             ))}
           </tbody>
         </table>
 
-        <Pagination
-          goPagination={goPagination}
-          helo="helo"
-          updateFetchUrl={updateFetchUrl}
-          meta={data?.meta}
-        />
-
+        <Pagination goPagination={goPagination} meta={data?.meta} />
       </div>
     </div>
   );

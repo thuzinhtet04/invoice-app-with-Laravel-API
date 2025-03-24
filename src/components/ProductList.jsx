@@ -43,6 +43,9 @@ const ProductList = () => {
   const updateFetchUrl = (url) => {
     setUrl(url);
   };
+  useEffect(() => {
+    setUrl(    import.meta.env.VITE_BASE_URL + "/products" + location.search)
+  },[searchParams])
 
   return (
     <div>

@@ -3,7 +3,7 @@ import { FaChevronLeft, FaChevronRight, FaObjectGroup } from "react-icons/fa";
 
 const Pagination = ({  meta, goPagination, ...rest }) => {
   // const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-
+console.log(goPagination)
   const paginationHandler = (url) => {
     const currentUrl = new URL(url);
     const param = currentUrl.search;

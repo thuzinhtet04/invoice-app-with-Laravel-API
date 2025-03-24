@@ -15,8 +15,9 @@ const ProfilePage = () => {
         <div className="flex gap-5 items-end  ">
          
 
-          <div className="relative border size-28 object-cover object-top bg-gray-300 rounded-md ">
+          <div className="relative border  object-cover object-top bg-gray-300 rounded-md ">
             <img
+            className="  object-cover size-28"
               src={
                 user.profile_image
                   ? user.profile_image
