@@ -5,7 +5,7 @@ import api from "./axiosInstance";
 export const fetcher = async (url, token) => {
 
 
-console.log(url , token)
+    
     const res = await api.get(url, {
         headers: {
             Authorization: `Bearer ${token}`
@@ -49,10 +49,10 @@ export const updateProduct = async (url, arg, token) => {
     return res.data
 
 }
-export const createVoucher = async (url,  {arg }) => {
-    const res = await api.post(url, arg.currentVoucher , {
-        headers : {
-            Authorization : `Bearer ${arg.token}`
+export const createVoucher = async (url, { arg }) => {
+    const res = await api.post(url, arg.currentVoucher, {
+        headers: {
+            Authorization: `Bearer ${arg.token}`
         }
     })
     return res.data

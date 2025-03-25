@@ -1,8 +1,14 @@
 import React from "react";
-import Layout from "./components/Layout.component"
+import Layout from "./components/Layout.component";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
-  return <Layout />;
+  return (
+    <>
+      <Layout />
+      <Toaster />
+    </>
+  );
 };
 
 export default App;

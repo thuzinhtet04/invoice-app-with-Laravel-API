@@ -5,6 +5,7 @@ import { useUserStore } from "../Store/useUserStore";
 
 const Header = () => {
   const [userCookie] = useCookie("user");
+console.log(userCookie)
   const {
     user: { name, email, profile_image },
   } = useUserStore();

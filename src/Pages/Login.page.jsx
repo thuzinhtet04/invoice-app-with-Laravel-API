@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useSWRMutation from "swr/mutation";
 import toast, { Toaster } from "react-hot-toast";
 import useCookie from "react-use-cookie";
-import {  useUserStore } from "../Store/useUserStore";
+import { useUserStore } from "../Store/useUserStore";
 
 const LoginPage = () => {
   const nav = useNavigate();
@@ -52,17 +52,18 @@ const LoginPage = () => {
     });
 
     const res = await trigger(LoginData);
-    if ((res.status = 200)) {
+    console.log(res)
+    if (res.token ) {
       toast.success("Login successfully");
       setToken(res.token);
-      setUserCookie(JSON.stringify( res.user));
+      setUserCookie(JSON.stringify(res.user));
       setUser(res.user);
-console.log(res.token)
+  
       nav("/dashboard");
-    }
+    } 
   };
   if (token) {
-   return <Navigate to="/dashboard" />
+    return <Navigate to="/dashboard" />;
   }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">

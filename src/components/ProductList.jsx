@@ -28,12 +28,13 @@ const ref = useRef("")
   const [token] = useCookie("my-token")
 console.log(location.search)
 
-  const { data , isLoading , isFetching } = useSWR( [url, token] , fetcher)
+  const { data , isLoading , isFetching } = useSWR( url , (url) =>  fetcher(url , token))
   ;
 
 
 
 const handleSearch = debounce((e) => {
+
   setUrl(import.meta.env.VITE_BASE_URL + "/products?q=" + e.target.value);
   setSearch(e.target.value)
   
@@ -45,9 +46,7 @@ const handleSearch = debounce((e) => {
     ref.current.value = null;
     setUrl(import.meta.env.VITE_BASE_URL + "/products");
   };
-  const updateFetchUrl = (url) => {
-    setUrl(url);
-  };
+
   useEffect(() => {
     setUrl(    import.meta.env.VITE_BASE_URL + "/products" + location.search)
   },[searchParams])
@@ -133,7 +132,7 @@ console.log(data)
           </tbody>
         </table>
       </div>
-      <Pagination updateFetchUrl={updateFetchUrl} meta={data?.meta} />
+      <Pagination goPagination={setSearchParams} meta={data?.meta} />
     </div>
   );
 };

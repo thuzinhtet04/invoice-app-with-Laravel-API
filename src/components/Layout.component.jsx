@@ -23,7 +23,7 @@ const Layout = () => {
       <Container>
         <Header />
         <Outlet />
-        <Toaster position="bottom-right" />
+        {/* <Toaster position="bottom-right" /> */}
       </Container>
     </>
   );

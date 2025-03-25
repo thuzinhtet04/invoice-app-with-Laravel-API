@@ -26,10 +26,7 @@ const VoucherList = () => {
     setSearch(e.target.value);
     setUrl(`${import.meta.env.VITE_BASE_URL}/vouchers?q=${e.target.value}`);
   }, 500);
-  const goPagination = (paramObj) => {
-    setSearchParam(paramObj);
-    console.log("you update the URL bar")
-  };
+
   const clearSearchHandler = () => {
     setSearch("");
     searchRef.current.value = "";
@@ -39,7 +36,6 @@ const VoucherList = () => {
   useEffect(() => {
     setUrl(import.meta.env.VITE_BASE_URL + "/vouchers" + location.search);
   }, [searchParam]);
-  console.log(data)
   return (
     <div>
       <div className="flex  justify-between mb-3">
@@ -90,6 +86,50 @@ const VoucherList = () => {
             </tr>
           </thead>
           <tbody>
+            {isLoading && (
+              <>
+              <tr className="animate-pulse border-b">
+                <td className="px-6 py-4">
+                  <div className="h-4 w-24 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="h-4 w-32 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4 ml-auto">
+                  <div className="h-4 w-20 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="h-4 w-20 bg-gray-300 rounded"></div>
+                </td>
+              </tr>    <tr className="animate-pulse border-b">
+                <td className="px-6 py-4">
+                  <div className="h-4 w-24 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="h-4 w-32 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4 ml-auto">
+                  <div className="h-4 w-20 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="h-4 w-20 bg-gray-300 rounded"></div>
+                </td>
+              </tr>    <tr className="animate-pulse border-b">
+                <td className="px-6 py-4">
+                  <div className="h-4 w-24 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="h-4 w-32 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4 ml-auto">
+                  <div className="h-4 w-20 bg-gray-300 rounded"></div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="h-4 w-20 bg-gray-300 rounded"></div>
+                </td>
+              </tr>
+              </>
+            )}
             {!isLoading && !data ? (
               <tr className="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
                 <td colSpan={5} className="px-6  text-center py-4 ">
@@ -105,7 +145,7 @@ const VoucherList = () => {
           </tbody>
         </table>
 
-        <Pagination goPagination={goPagination} meta={data?.meta} />
+        <Pagination goPagination={setSearchParam} meta={data?.meta} />
       </div>
     </div>
   );

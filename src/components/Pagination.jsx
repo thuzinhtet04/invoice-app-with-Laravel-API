@@ -1,17 +1,17 @@
 import React from "react";
 import { FaChevronLeft, FaChevronRight, FaObjectGroup } from "react-icons/fa";
 
-const Pagination = ({ updateFetchUrl, meta, ...rest }) => {
+const Pagination = ({ goPagination, meta, ...rest }) => {
   // const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-console.log(goPagination)
-  const paginationHandler = (url) => {
-    // const currentUrl = new URL(url)
-    // const param = currentUrl.search
 
-    // const paramObj = new URLSearchParams(param)
-    // const objEntriesParam = Object.fromEntries(paramObj)
-    updateFetchUrl(url);
-    // goPagination(objEntriesParam)
+  const paginationHandler = (url) => {
+    const currentUrl = new URL(url)
+    const param = currentUrl.search
+
+    const paramObj = new URLSearchParams(param)
+    const objEntriesParam = Object.fromEntries(paramObj)
+    
+    goPagination(objEntriesParam)
   };
 
   return (
